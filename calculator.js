@@ -212,7 +212,16 @@ function calculatePlanCost(plan, inputs) {
   if (plan.rx?.tier1_retail) {
     rxCosts += genericAnnual * plan.rx.tier1_retail;
   } else if (plan.rx?.tier1) {
-    const tier1Cost = plan.rx.tier1.includes('%') ? 10 : parseInt(plan.rx.tier1.replace(/[^0-9]/g, '')) || 10;
+    // Handle both string and number values
+    const tier1Value = plan.rx.tier1;
+    let tier1Cost;
+    if (typeof tier1Value === 'number') {
+      tier1Cost = tier1Value;
+    } else if (typeof tier1Value === 'string') {
+      tier1Cost = tier1Value.includes('%') ? 10 : parseInt(tier1Value.replace(/[^0-9]/g, '')) || 10;
+    } else {
+      tier1Cost = 10;
+    }
     rxCosts += genericAnnual * tier1Cost;
   } else {
     rxCosts += genericAnnual * 7; // default
@@ -221,7 +230,16 @@ function calculatePlanCost(plan, inputs) {
   if (plan.rx?.tier2_retail) {
     rxCosts += preferredAnnual * plan.rx.tier2_retail;
   } else if (plan.rx?.tier2) {
-    const tier2Cost = parseInt(plan.rx.tier2.replace(/[^0-9]/g, '')) || 35;
+    // Handle both string and number values
+    const tier2Value = plan.rx.tier2;
+    let tier2Cost;
+    if (typeof tier2Value === 'number') {
+      tier2Cost = tier2Value;
+    } else if (typeof tier2Value === 'string') {
+      tier2Cost = parseInt(tier2Value.replace(/[^0-9]/g, '')) || 35;
+    } else {
+      tier2Cost = 35;
+    }
     rxCosts += preferredAnnual * tier2Cost;
   } else {
     rxCosts += preferredAnnual * 35; // default
@@ -229,6 +247,18 @@ function calculatePlanCost(plan, inputs) {
 
   if (plan.rx?.tier3_retail) {
     rxCosts += nonpreferredAnnual * plan.rx.tier3_retail;
+  } else if (plan.rx?.tier3) {
+    // Handle both string and number values
+    const tier3Value = plan.rx.tier3;
+    let tier3Cost;
+    if (typeof tier3Value === 'number') {
+      tier3Cost = tier3Value;
+    } else if (typeof tier3Value === 'string') {
+      tier3Cost = parseInt(tier3Value.replace(/[^0-9]/g, '')) || 75;
+    } else {
+      tier3Cost = 75;
+    }
+    rxCosts += nonpreferredAnnual * tier3Cost;
   } else {
     rxCosts += nonpreferredAnnual * 75; // default
   }
