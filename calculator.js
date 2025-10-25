@@ -1,24 +1,27 @@
 /**
- * Health Benefits Calculator
- * Real-time cost calculation engine with interactive features
+ * Scott & Liz Family Benefits Calculator
+ * Calculate costs for family of 4 including medical, dental, and vision
  */
 
-// Calculator state
+// Calculator state - Family of 4 (Scott, Liz, Wills, Jack)
 const calculatorState = {
   inputs: {
-    coverageTier: 'employee',
-    age: 35,
-    numDependents: 0,
-    primaryVisits: 2,
-    specialistVisits: 0,
-    urgentCareVisits: 0,
+    // Medical usage (annual, for entire family)
+    primaryVisits: 8,
+    specialistVisits: 2,
+    urgentCareVisits: 1,
     erVisits: 0,
-    genericRx: 0,
-    preferredRx: 0,
+    // Prescriptions (monthly, for entire family)
+    genericRx: 2,
+    preferredRx: 1,
     nonpreferredRx: 0,
-    specialtyRx: 0,
-    plannedProcedures: 0,
-    hasChronicCondition: false
+    // Dental & Vision (if enrolled)
+    includeDental: true,
+    includeVision: true,
+    dentalVisits: 8,
+    dentalWork: 0,
+    visionExams: 4,
+    glassesContacts: 2
   },
   results: null
 };
@@ -37,47 +40,28 @@ document.addEventListener('DOMContentLoaded', function() {
  * Initialize all calculator inputs
  */
 function initCalculatorInputs() {
-  // Coverage tier
-  const coverageTier = document.getElementById('coverage-tier');
-  if (coverageTier) {
-    coverageTier.addEventListener('change', (e) => {
-      calculatorState.inputs.coverageTier = e.target.value;
+  // Benefits checkboxes
+  const includeDental = document.getElementById('include-dental');
+  if (includeDental) {
+    includeDental.addEventListener('change', (e) => {
+      calculatorState.inputs.includeDental = e.target.checked;
       saveInputs();
     });
   }
 
-  // Age
-  const age = document.getElementById('age');
-  if (age) {
-    age.addEventListener('input', (e) => {
-      calculatorState.inputs.age = parseInt(e.target.value) || 35;
+  const includeVision = document.getElementById('include-vision');
+  if (includeVision) {
+    includeVision.addEventListener('change', (e) => {
+      calculatorState.inputs.includeVision = e.target.checked;
       saveInputs();
     });
   }
 
-  // Number of dependents
-  const numDependents = document.getElementById('num-dependents');
-  if (numDependents) {
-    numDependents.addEventListener('input', (e) => {
-      calculatorState.inputs.numDependents = parseInt(e.target.value) || 0;
-      saveInputs();
-    });
-  }
-
-  // Planned procedures
-  const plannedProcedures = document.getElementById('planned-procedures');
-  if (plannedProcedures) {
-    plannedProcedures.addEventListener('input', (e) => {
-      calculatorState.inputs.plannedProcedures = parseInt(e.target.value) || 0;
-      saveInputs();
-    });
-  }
-
-  // Chronic condition checkbox
-  const hasChronicCondition = document.getElementById('has-chronic-condition');
-  if (hasChronicCondition) {
-    hasChronicCondition.addEventListener('change', (e) => {
-      calculatorState.inputs.hasChronicCondition = e.target.checked;
+  // Dental work cost
+  const dentalWork = document.getElementById('dental-work');
+  if (dentalWork) {
+    dentalWork.addEventListener('input', (e) => {
+      calculatorState.inputs.dentalWork = parseInt(e.target.value) || 0;
       saveInputs();
     });
   }
@@ -95,7 +79,9 @@ function initSliders() {
     { id: 'generic-rx', key: 'genericRx' },
     { id: 'preferred-rx', key: 'preferredRx' },
     { id: 'nonpreferred-rx', key: 'nonpreferredRx' },
-    { id: 'specialty-rx', key: 'specialtyRx' }
+    { id: 'dental-visits', key: 'dentalVisits' },
+    { id: 'vision-exams', key: 'visionExams' },
+    { id: 'glasses-contacts', key: 'glassesContacts' }
   ];
 
   sliders.forEach(({ id, key }) => {
@@ -124,7 +110,7 @@ function initCalculateButton() {
     calculateBtn.addEventListener('click', performCalculation);
   }
 
-  // Also calculate on Enter key in input fields
+  // Also calculate on Enter key
   document.querySelectorAll('.form-control, .form-slider').forEach(input => {
     input.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
@@ -138,13 +124,14 @@ function initCalculateButton() {
  * Perform the main calculation
  */
 function performCalculation() {
-  if (typeof healthPlans === 'undefined') {
-    console.error('Health plans data not loaded');
+  if (typeof allMedicalPlans === 'undefined') {
+    console.error('Medical plans data not loaded');
+    alert('Error: Plan data not loaded. Please refresh the page.');
     return;
   }
 
-  // Calculate costs for each plan
-  const results = healthPlans.map(plan => {
+  // Calculate costs for each medical plan
+  const results = allMedicalPlans.map(plan => {
     return calculatePlanCost(plan, calculatorState.inputs);
   });
 
@@ -167,153 +154,186 @@ function performCalculation() {
  * Calculate cost for a specific plan
  */
 function calculatePlanCost(plan, inputs) {
-  const tierKey = inputs.coverageTier;
+  // Base premium (always family for this calculator)
+  const monthlyPremium = plan.premiums.family_monthly || 0;
+  const annualPremium = plan.premiums.family_annual || 0;
 
-  // Base premium
-  const annualPremium = plan.premiums.annual[tierKey] || plan.premiums.annual.employee;
-  const monthlyPremium = plan.premiums.monthly[tierKey] || plan.premiums.monthly.employee;
+  // Add surcharge if applicable
+  const surchargeMonthly = plan.surcharge?.workingSpouse || 0;
+  const surchargeAnnual = surchargeMonthly * 12;
+  const totalPremium = annualPremium + surchargeAnnual;
 
-  // Calculate visit costs
+  // Calculate medical visit costs
   let visitCosts = 0;
 
   // Primary care visits
-  visitCosts += calculateVisitCost(
-    inputs.primaryVisits,
-    plan.coverage.primaryCare.cost,
-    plan
-  );
+  const pcpCopay = typeof plan.copays?.pcp === 'number' ? plan.copays.pcp : 25;
+  visitCosts += inputs.primaryVisits * pcpCopay;
 
   // Specialist visits
-  visitCosts += calculateVisitCost(
-    inputs.specialistVisits,
-    plan.coverage.specialist.cost,
-    plan
-  );
+  const specialistCopay = typeof plan.copays?.specialist === 'number' ? plan.copays.specialist : 50;
+  visitCosts += inputs.specialistVisits * specialistCopay;
 
   // Urgent care visits
-  visitCosts += calculateVisitCost(
-    inputs.urgentCareVisits,
-    plan.coverage.urgentCare.cost,
-    plan
-  );
+  const urgentCareCopay = typeof plan.copays?.urgentCare === 'number' ? plan.copays.urgentCare : 50;
+  visitCosts += inputs.urgentCareVisits * urgentCareCopay;
 
   // Emergency room visits
-  visitCosts += calculateVisitCost(
-    inputs.erVisits,
-    plan.coverage.emergency.cost,
-    plan
-  );
+  const erCopay = typeof plan.copays?.er === 'number' ? plan.copays.er : 300;
+  visitCosts += inputs.erVisits * erCopay;
 
-  // Calculate prescription costs (monthly, so multiply by 12)
+  // Calculate prescription costs (monthly input, so multiply by 12)
   let rxCosts = 0;
-  rxCosts += calculateRxCost(inputs.genericRx * 12, plan.coverage.prescription.generic, plan);
-  rxCosts += calculateRxCost(inputs.preferredRx * 12, plan.coverage.prescription.preferred, plan);
-  rxCosts += calculateRxCost(inputs.nonpreferredRx * 12, plan.coverage.prescription.nonPreferred, plan);
-  rxCosts += calculateRxCost(inputs.specialtyRx * 12, plan.coverage.prescription.specialty, plan);
+  const rxDeductible = plan.rx?.deductible ? (plan.deductible.individual || 0) : 0;
 
-  // Planned procedures
-  let procedureCosts = 0;
-  if (inputs.plannedProcedures > 0) {
-    // Apply deductible and coinsurance
-    const afterDeductible = Math.max(0, inputs.plannedProcedures - plan.deductible.individual);
-    procedureCosts = afterDeductible * (plan.coinsurance / 100);
+  // Estimate Rx costs
+  const genericAnnual = inputs.genericRx * 12;
+  const preferredAnnual = inputs.preferredRx * 12;
+  const nonpreferredAnnual = inputs.nonpreferredRx * 12;
+
+  if (plan.rx?.tier1_retail) {
+    rxCosts += genericAnnual * plan.rx.tier1_retail;
+  } else if (plan.rx?.tier1) {
+    const tier1Cost = plan.rx.tier1.includes('%') ? 10 : parseInt(plan.rx.tier1.replace(/[^0-9]/g, '')) || 10;
+    rxCosts += genericAnnual * tier1Cost;
+  } else {
+    rxCosts += genericAnnual * 7; // default
+  }
+
+  if (plan.rx?.tier2_retail) {
+    rxCosts += preferredAnnual * plan.rx.tier2_retail;
+  } else if (plan.rx?.tier2) {
+    const tier2Cost = parseInt(plan.rx.tier2.replace(/[^0-9]/g, '')) || 35;
+    rxCosts += preferredAnnual * tier2Cost;
+  } else {
+    rxCosts += preferredAnnual * 35; // default
+  }
+
+  if (plan.rx?.tier3_retail) {
+    rxCosts += nonpreferredAnnual * plan.rx.tier3_retail;
+  } else {
+    rxCosts += nonpreferredAnnual * 75; // default
+  }
+
+  // Add Rx deductible if required (only once per family member on prescriptions)
+  if (plan.rx?.deductible && (inputs.genericRx + inputs.preferredRx + inputs.nonpreferredRx > 0)) {
+    rxCosts += rxDeductible;
   }
 
   // Total medical costs before OOP max
-  let totalMedicalCosts = visitCosts + rxCosts + procedureCosts;
-
-  // Apply chronic condition modifier (estimate 20% increase in costs)
-  if (inputs.hasChronicCondition) {
-    totalMedicalCosts *= 1.2;
-  }
+  let totalMedicalCosts = visitCosts + rxCosts;
 
   // Apply out-of-pocket maximum
-  const oopMax = tierKey === 'family' || tierKey === 'employeeChildren' || tierKey === 'employeeSpouse'
-    ? plan.outOfPocketMax.family
-    : plan.outOfPocketMax.individual;
-
+  const oopMax = plan.oopMax?.family || plan.oopMax?.individual || 15000;
   totalMedicalCosts = Math.min(totalMedicalCosts, oopMax);
 
   // HSA contribution (reduces net cost)
-  const hsaContribution = plan.hsaEligible
-    ? (tierKey === 'family' ? plan.employerHSAContribution.family : plan.employerHSAContribution.employee)
-    : 0;
+  const hsaContribution = plan.hsa?.eligible ? (plan.hsa.employerContribution || 0) : 0;
+
+  // Calculate dental costs if included
+  let dentalCosts = 0;
+  if (inputs.includeDental && typeof dentalPlans !== 'undefined') {
+    const employerDental = plan.employer.includes('USG') ? dentalPlans.usg[1] : dentalPlans.zaxbys; // USG High recommended
+    dentalCosts = calculateDentalCosts(employerDental, inputs);
+  }
+
+  // Calculate vision costs if included
+  let visionCosts = 0;
+  if (inputs.includeVision && typeof visionPlans !== 'undefined') {
+    const employerVision = plan.employer.includes('USG') ? visionPlans.usg : visionPlans.zaxbys;
+    visionCosts = calculateVisionCosts(employerVision, inputs);
+  }
 
   // Total annual cost
-  const totalAnnualCost = annualPremium + totalMedicalCosts - hsaContribution;
+  const totalAnnualCost = totalPremium + totalMedicalCosts + dentalCosts + visionCosts - hsaContribution;
 
   return {
     planId: plan.id,
     planName: plan.name,
     planCategory: plan.category,
+    employer: plan.employer,
     monthlyPremium,
-    annualPremium,
+    annualPremium: totalPremium,
+    surcharge: surchargeAnnual,
     visitCosts,
     rxCosts,
-    procedureCosts,
     totalMedicalCosts,
+    dentalCosts,
+    visionCosts,
     hsaContribution,
     totalAnnualCost,
-    deductible: tierKey === 'family' ? plan.deductible.family : plan.deductible.individual,
+    deductible: plan.deductible.family || plan.deductible.individual || 0,
     oopMax,
     breakdown: {
-      premiums: annualPremium,
-      primaryCare: calculateVisitCost(inputs.primaryVisits, plan.coverage.primaryCare.cost, plan),
-      specialist: calculateVisitCost(inputs.specialistVisits, plan.coverage.specialist.cost, plan),
-      urgentCare: calculateVisitCost(inputs.urgentCareVisits, plan.coverage.urgentCare.cost, plan),
-      emergency: calculateVisitCost(inputs.erVisits, plan.coverage.emergency.cost, plan),
+      premiums: totalPremium,
+      primaryCare: inputs.primaryVisits * pcpCopay,
+      specialist: inputs.specialistVisits * specialistCopay,
+      urgentCare: inputs.urgentCareVisits * urgentCareCopay,
+      emergency: inputs.erVisits * erCopay,
       prescriptions: rxCosts,
-      procedures: procedureCosts,
-      hsaCredit: -hsaContribution
+      dental: dentalCosts,
+      vision: visionCosts,
+      hsaCredit: -hsaContribution,
+      surcharge: surchargeAnnual
     }
   };
 }
 
 /**
- * Calculate cost for a specific type of visit
+ * Calculate dental costs
  */
-function calculateVisitCost(numVisits, costStructure, plan) {
-  if (numVisits === 0) return 0;
+function calculateDentalCosts(dentalPlan, inputs) {
+  if (!dentalPlan) return 0;
 
-  // Parse cost structure
-  if (costStructure.includes('copay')) {
-    // Extract copay amount
-    const copay = parseInt(costStructure.replace(/[^0-9]/g, ''));
-    return numVisits * copay;
-  } else if (costStructure.includes('%')) {
-    // Coinsurance after deductible
-    // Estimate average visit cost
-    const avgVisitCost = costStructure.includes('primary') ? 150 : 250;
-    return numVisits * avgVisitCost * (plan.coinsurance / 100);
-  } else if (costStructure.includes('Covered') || costStructure.includes('100%')) {
-    return 0;
+  const annualPremium = dentalPlan.premiums?.family_annual || dentalPlan.premiums?.annual || 0;
+
+  // Preventive care (cleanings, exams) typically 100% covered
+  let dentalWork = 0;
+
+  // Apply deductible and coverage percentages to additional dental work
+  if (inputs.dentalWork > 0) {
+    const deductible = dentalPlan.deductible?.family || 150;
+    const afterDeductible = Math.max(0, inputs.dentalWork - deductible);
+
+    // Assume mix of basic (80%) and major (50%) work
+    const basicPortion = afterDeductible * 0.6; // 60% is basic work
+    const majorPortion = afterDeductible * 0.4; // 40% is major work
+
+    const basicCoverage = dentalPlan.coverage?.basic === '80%' ? 0.8 : 0.8;
+    const majorCoverage = dentalPlan.coverage?.major === '80%' ? 0.8 : 0.5;
+
+    dentalWork = (basicPortion * (1 - basicCoverage)) + (majorPortion * (1 - majorCoverage));
+
+    // Apply annual maximum
+    const annualMax = dentalPlan.annualMax || 1500;
+    const insurancePays = Math.min(
+      (basicPortion * basicCoverage) + (majorPortion * majorCoverage),
+      annualMax - deductible
+    );
+    dentalWork = inputs.dentalWork - insurancePays;
   }
 
-  // Default estimation
-  return numVisits * 50;
+  return annualPremium + dentalWork;
 }
 
 /**
- * Calculate prescription costs
+ * Calculate vision costs
  */
-function calculateRxCost(numPrescriptions, costStructure, plan) {
-  if (numPrescriptions === 0) return 0;
+function calculateVisionCosts(visionPlan, inputs) {
+  if (!visionPlan) return 0;
 
-  if (costStructure.includes('copay')) {
-    const copay = parseInt(costStructure.replace(/[^0-9]/g, ''));
-    return numPrescriptions * copay;
-  } else if (costStructure.includes('%')) {
-    // Estimate average Rx cost by type
-    let avgCost = 30; // Default
-    if (costStructure.includes('specialty')) avgCost = 500;
-    else if (costStructure.includes('nonPreferred')) avgCost = 100;
-    else if (costStructure.includes('preferred')) avgCost = 60;
+  const annualPremium = visionPlan.premiums?.family_annual || visionPlan.premiums?.annual || 0;
 
-    const percentage = parseInt(costStructure.replace(/[^0-9]/g, '')) || plan.coinsurance;
-    return numPrescriptions * avgCost * (percentage / 100);
-  }
+  // Exam copay
+  const examCopay = visionPlan.benefits?.examCopay || 10;
+  const examCosts = inputs.visionExams * examCopay;
 
-  return numPrescriptions * 20; // Default
+  // Glasses/contacts - allowance typically covers most of cost
+  // Estimate $150 average cost per person, plan covers $120-150
+  const avgOutOfPocket = 30; // after allowance
+  const glassesContactsCosts = inputs.glassesContacts * avgOutOfPocket;
+
+  return annualPremium + examCosts + glassesContactsCosts;
 }
 
 /**
@@ -343,21 +363,22 @@ function displaySummaryCards(results) {
 
   container.innerHTML = `
     <div class="summary-card winner">
-      <div class="summary-label">Best Plan</div>
+      <div class="summary-label">Best Plan for Your Family</div>
       <div class="summary-value">${bestPlan.planName}</div>
       <div class="summary-sublabel">$${Math.round(bestPlan.totalAnnualCost).toLocaleString()} / year</div>
+      <div class="summary-sublabel">${bestPlan.employer}</div>
     </div>
 
     <div class="summary-card">
       <div class="summary-label">Potential Savings</div>
       <div class="summary-value">$${Math.round(savings).toLocaleString()}</div>
-      <div class="summary-sublabel">vs. highest cost plan</div>
+      <div class="summary-sublabel">vs. highest cost option</div>
     </div>
 
     <div class="summary-card">
-      <div class="summary-label">Average Annual Cost</div>
+      <div class="summary-label">Average Cost</div>
       <div class="summary-value">$${Math.round(avgCost).toLocaleString()}</div>
-      <div class="summary-sublabel">across all plans</div>
+      <div class="summary-sublabel">across all plan options</div>
     </div>
   `;
 }
@@ -374,6 +395,7 @@ function displayDetailedBreakdown(results) {
       <div class="result-card ${index === 0 ? 'best-plan' : ''}">
         <div class="result-card-header">
           <h4 class="result-plan-name">${result.planName}</h4>
+          <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-top: 4px;">${result.employer}</p>
           <div class="result-total-cost">
             <div class="cost-label">Total Annual Cost</div>
             <div class="cost-value">$${Math.round(result.totalAnnualCost).toLocaleString()}</div>
@@ -382,9 +404,15 @@ function displayDetailedBreakdown(results) {
 
         <div class="cost-breakdown">
           <div class="breakdown-row">
-            <span class="breakdown-label">Annual Premiums</span>
+            <span class="breakdown-label">Annual Premiums (Medical)</span>
             <span class="breakdown-value">$${result.annualPremium.toLocaleString()}</span>
           </div>
+          ${result.surcharge > 0 ? `
+          <div class="breakdown-row" style="color: var(--danger-color);">
+            <span class="breakdown-label">⚠️ Spouse Surcharge</span>
+            <span class="breakdown-value">$${result.surcharge.toLocaleString()}</span>
+          </div>
+          ` : ''}
           <div class="breakdown-row">
             <span class="breakdown-label">Primary Care Visits</span>
             <span class="breakdown-value">$${Math.round(result.breakdown.primaryCare).toLocaleString()}</span>
@@ -405,27 +433,33 @@ function displayDetailedBreakdown(results) {
             <span class="breakdown-label">Prescriptions</span>
             <span class="breakdown-value">$${Math.round(result.breakdown.prescriptions).toLocaleString()}</span>
           </div>
-          ${result.breakdown.procedures > 0 ? `
+          ${result.dentalCosts > 0 ? `
           <div class="breakdown-row">
-            <span class="breakdown-label">Planned Procedures</span>
-            <span class="breakdown-value">$${Math.round(result.breakdown.procedures).toLocaleString()}</span>
+            <span class="breakdown-label">Dental (Premium + Work)</span>
+            <span class="breakdown-value">$${Math.round(result.dentalCosts).toLocaleString()}</span>
+          </div>
+          ` : ''}
+          ${result.visionCosts > 0 ? `
+          <div class="breakdown-row">
+            <span class="breakdown-label">Vision</span>
+            <span class="breakdown-value">$${Math.round(result.visionCosts).toLocaleString()}</span>
           </div>
           ` : ''}
           ${result.hsaContribution > 0 ? `
           <div class="breakdown-row" style="color: var(--success-color);">
-            <span class="breakdown-label">Employer HSA Contribution</span>
+            <span class="breakdown-label">Employer HSA Match</span>
             <span class="breakdown-value">-$${result.hsaContribution.toLocaleString()}</span>
           </div>
           ` : ''}
           <div class="breakdown-row" style="border-top: 2px solid var(--border-color); margin-top: var(--space-sm); padding-top: var(--space-sm); font-weight: var(--font-weight-bold);">
-            <span class="breakdown-label">Total Medical Costs</span>
+            <span class="breakdown-label">Total Out-of-Pocket Medical</span>
             <span class="breakdown-value">$${Math.round(result.totalMedicalCosts).toLocaleString()}</span>
           </div>
         </div>
 
         <div style="margin-top: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--border-color);">
           <div style="display: flex; justify-content: space-between; font-size: var(--font-size-sm); color: var(--text-tertiary);">
-            <span>Deductible: $${result.deductible.toLocaleString()}</span>
+            <span>Family Deductible: $${result.deductible.toLocaleString()}</span>
             <span>OOP Max: $${result.oopMax.toLocaleString()}</span>
           </div>
           <div style="margin-top: var(--space-sm); font-size: var(--font-size-sm); color: var(--text-tertiary);">
@@ -436,20 +470,21 @@ function displayDetailedBreakdown(results) {
     `).join('');
   }
 
-  // Table view
+  // Table view (simplified for readability)
   if (tableView) {
     const tbody = tableView.querySelector('#breakdown-tbody');
     if (tbody) {
       const categories = [
-        { label: 'Annual Premiums', key: 'premiums' },
+        { label: 'Medical Premiums', key: 'premiums' },
         { label: 'Primary Care', key: 'primaryCare' },
         { label: 'Specialist', key: 'specialist' },
         { label: 'Urgent Care', key: 'urgentCare' },
         { label: 'Emergency Room', key: 'emergency' },
         { label: 'Prescriptions', key: 'prescriptions' },
-        { label: 'Procedures', key: 'procedures' },
-        { label: 'HSA Contribution', key: 'hsaCredit' },
-        { label: 'Total Medical', key: 'totalMedical' },
+        { label: 'Dental', key: 'dental' },
+        { label: 'Vision', key: 'vision' },
+        { label: 'Spouse Surcharge', key: 'surcharge' },
+        { label: 'HSA Match', key: 'hsaCredit' },
         { label: 'TOTAL ANNUAL COST', key: 'total' }
       ];
 
@@ -457,7 +492,7 @@ function displayDetailedBreakdown(results) {
       const thead = tableView.querySelector('thead tr');
       if (thead) {
         thead.innerHTML = '<th scope="col">Cost Category</th>' +
-          results.map(r => `<th scope="col">${r.planName}</th>`).join('');
+          results.map(r => `<th scope="col">${r.planName}<br><small>${r.employer}</small></th>`).join('');
       }
 
       tbody.innerHTML = categories.map(cat => {
@@ -465,11 +500,11 @@ function displayDetailedBreakdown(results) {
           let value;
           if (cat.key === 'total') {
             value = Math.round(r.totalAnnualCost);
-          } else if (cat.key === 'totalMedical') {
-            value = Math.round(r.totalMedicalCosts);
           } else {
             value = Math.round(r.breakdown[cat.key] || 0);
           }
+
+          if (value === 0) return '<td>--</td>';
 
           const displayValue = value < 0 ? `-$${Math.abs(value).toLocaleString()}` : `$${value.toLocaleString()}`;
           const style = cat.key === 'total' ? 'font-weight: var(--font-weight-bold);' : '';
@@ -554,7 +589,9 @@ function displayResultsChart(results) {
         },
         x: {
           ticks: {
-            color: textColor
+            color: textColor,
+            maxRotation: 45,
+            minRotation: 45
           },
           grid: {
             display: false
@@ -592,39 +629,22 @@ function displayBreakevenAnalysis(results) {
   const container = document.getElementById('breakeven-content');
   if (!container || results.length < 2) return;
 
-  const analysis = [];
+  const bestPlan = results[0];
+  const secondBest = results[1];
 
-  for (let i = 0; i < results.length - 1; i++) {
-    const planA = results[i];
-    const planB = results[i + 1];
+  const premiumDiff = bestPlan.monthlyPremium - secondBest.monthlyPremium;
+  const costDiff = secondBest.totalAnnualCost - bestPlan.totalAnnualCost;
 
-    const premiumDiff = planB.monthlyPremium - planA.monthlyPremium;
-    const deductibleDiff = planA.deductible - planB.deductible;
-
-    if (premiumDiff !== 0) {
-      const monthsToBreakEven = Math.abs(deductibleDiff / premiumDiff);
-
-      analysis.push({
-        planA: planA.planName,
-        planB: planB.planName,
-        premiumDiff: Math.abs(premiumDiff),
-        cheaper: premiumDiff > 0 ? planA.planName : planB.planName,
-        monthsToBreakEven: monthsToBreakEven,
-        message: monthsToBreakEven < 12
-          ? `${planA.planName} becomes more cost-effective after ${Math.round(monthsToBreakEven)} months of high medical usage`
-          : `${planB.planName} is more cost-effective for typical usage patterns`
-      });
-    }
-  }
-
-  container.innerHTML = analysis.map(a => `
+  container.innerHTML = `
     <div class="breakeven-card">
-      <p><strong>${a.message}</strong></p>
+      <h4>${bestPlan.planName} vs ${secondBest.planName}</h4>
+      <p><strong>Best Choice:</strong> ${bestPlan.planName} saves you $${Math.round(costDiff).toLocaleString()}/year for your family's expected usage.</p>
       <p style="margin-top: var(--space-sm); font-size: var(--font-size-sm); color: var(--text-secondary);">
-        ${a.planB} has $${Math.round(a.premiumDiff).toLocaleString()} higher monthly premium, but may save money with frequent healthcare use.
+        Even though ${bestPlan.planName} may have ${premiumDiff > 0 ? 'higher' : 'lower'} premiums,
+        the total cost with your family's healthcare needs makes it the better value.
       </p>
     </div>
-  `).join('');
+  `;
 }
 
 /**
@@ -636,7 +656,7 @@ function displaySavingsComparison(results) {
 
   const bestPlan = results[0];
 
-  container.innerHTML = results.slice(1).map(plan => {
+  container.innerHTML = results.slice(1, 4).map(plan => {
     const savings = plan.totalAnnualCost - bestPlan.totalAnnualCost;
     const monthlySavings = savings / 12;
 
@@ -645,7 +665,7 @@ function displaySavingsComparison(results) {
         <h4>${bestPlan.planName} vs ${plan.planName}</h4>
         <div class="savings-amount">$${Math.round(savings).toLocaleString()}</div>
         <p style="font-size: var(--font-size-sm); color: var(--text-secondary);">
-          Annual savings<br>
+          Annual savings by choosing ${bestPlan.planName}<br>
           ($${Math.round(monthlySavings).toLocaleString()}/month)
         </p>
       </div>
@@ -666,41 +686,48 @@ function displayPersonalizedRecommendation(results) {
   let recommendation = '';
   let reasoning = [];
 
-  // Determine recommendation reasoning
-  if (inputs.hasChronicCondition || inputs.specialistVisits > 4) {
-    recommendation = `Based on your chronic condition or frequent specialist visits, ${bestPlan.planName} offers the best value.`;
-    reasoning.push('Lower out-of-pocket costs for frequent medical care');
-    reasoning.push('Predictable copays help with budgeting');
-  } else if (inputs.primaryVisits <= 2 && inputs.specialistVisits === 0 && inputs.erVisits === 0) {
-    recommendation = `For your low healthcare usage, ${bestPlan.planName} minimizes costs while maintaining coverage.`;
-    reasoning.push('Low premiums save money when you rarely need care');
+  // Determine recommendation based on family needs
+  const totalVisits = inputs.primaryVisits + inputs.specialistVisits + inputs.urgentCareVisits + inputs.erVisits;
+
+  if (totalVisits > 15 || inputs.dentalWork > 2000) {
+    recommendation = `For Scott, Liz, Wills & Jack with frequent healthcare needs, ${bestPlan.planName} provides the best value with predictable copays and comprehensive coverage.`;
+    reasoning.push('Lower out-of-pocket costs for frequent medical visits');
+    reasoning.push('Predictable copays help with family budgeting');
+    reasoning.push('Good coverage for dental and vision needs');
+  } else if (totalVisits <= 10) {
+    recommendation = `For your family's moderate healthcare usage, ${bestPlan.planName} offers the best balance of premiums and coverage.`;
+    reasoning.push('Competitive premiums while maintaining good coverage');
     if (bestPlan.hsaContribution > 0) {
-      reasoning.push(`Employer HSA contribution of $${bestPlan.hsaContribution} provides additional value`);
+      reasoning.push(`Employer HSA contribution of $${bestPlan.hsaContribution.toLocaleString()} adds significant value`);
     }
-    reasoning.push('Protection from catastrophic costs');
+    reasoning.push('Protection for unexpected healthcare needs');
   } else {
-    recommendation = `For your moderate healthcare needs, ${bestPlan.planName} provides the best balance of premium costs and coverage.`;
-    reasoning.push('Optimal balance between monthly premiums and out-of-pocket costs');
-    reasoning.push('Good coverage for regular medical needs');
+    recommendation = `${bestPlan.planName} provides the optimal balance for your family of 4, considering all healthcare, dental, and vision needs.`;
+    reasoning.push('Best total value across medical, dental, and vision');
+    reasoning.push('Balanced premium and out-of-pocket costs');
+    if (bestPlan.surcharge === 0) {
+      reasoning.push('No spouse surcharge saves your family money');
+    }
   }
 
   const reasoningHTML = reasoning.map(r => `<li>${r}</li>`).join('');
 
   container.innerHTML = `
-    <h4>${bestPlan.planName}</h4>
+    <h4>Recommended: ${bestPlan.planName}</h4>
+    <p style="font-size: 0.9em; color: var(--text-secondary); margin-top: 4px;">${bestPlan.employer}</p>
     <p style="font-size: var(--font-size-lg); margin: var(--space-md) 0;">
       ${recommendation}
     </p>
 
     <div style="margin-top: var(--space-lg);">
-      <strong>Why this plan:</strong>
+      <strong>Why this plan is best for your family:</strong>
       <ul style="margin-top: var(--space-sm); padding-left: var(--space-xl);">
         ${reasoningHTML}
       </ul>
     </div>
 
     <div style="margin-top: var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--border-color);">
-      <strong>Your estimated costs:</strong>
+      <strong>Estimated total costs for Scott, Liz, Wills & Jack:</strong>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-md); margin-top: var(--space-md);">
         <div>
           <div style="font-size: var(--font-size-xs); color: var(--text-tertiary);">Monthly</div>
@@ -749,11 +776,11 @@ function initViewToggles() {
  * Save/Load inputs to localStorage
  */
 function saveInputs() {
-  localStorage.setItem('calculatorInputs', JSON.stringify(calculatorState.inputs));
+  localStorage.setItem('familyCalculatorInputs', JSON.stringify(calculatorState.inputs));
 }
 
 function loadSavedInputs() {
-  const saved = localStorage.getItem('calculatorInputs');
+  const saved = localStorage.getItem('familyCalculatorInputs');
   if (saved) {
     try {
       const inputs = JSON.parse(saved);
@@ -811,20 +838,21 @@ function saveScenario() {
     return;
   }
 
-  const scenarios = JSON.parse(localStorage.getItem('savedScenarios') || '[]');
+  const scenarios = JSON.parse(localStorage.getItem('familySavedScenarios') || '[]');
 
   const scenario = {
     id: Date.now(),
     date: new Date().toLocaleString(),
     inputs: { ...calculatorState.inputs },
-    results: calculatorState.results.map(r => ({
+    results: calculatorState.results.slice(0, 3).map(r => ({
       planName: r.planName,
+      employer: r.employer,
       totalAnnualCost: Math.round(r.totalAnnualCost)
     }))
   };
 
   scenarios.push(scenario);
-  localStorage.setItem('savedScenarios', JSON.stringify(scenarios));
+  localStorage.setItem('familySavedScenarios', JSON.stringify(scenarios));
 
   loadScenarios();
   alert('Scenario saved successfully!');
@@ -834,7 +862,7 @@ function loadScenarios() {
   const container = document.getElementById('scenarios-list');
   if (!container) return;
 
-  const scenarios = JSON.parse(localStorage.getItem('savedScenarios') || '[]');
+  const scenarios = JSON.parse(localStorage.getItem('familySavedScenarios') || '[]');
 
   if (scenarios.length === 0) {
     container.innerHTML = '<p class="empty-state">No saved scenarios yet. Use the "Save Scenario" button to save your calculations.</p>';
@@ -846,7 +874,7 @@ function loadScenarios() {
       <div class="scenario-info">
         <h4>Scenario from ${scenario.date}</h4>
         <p style="font-size: var(--font-size-sm); color: var(--text-secondary); margin-top: var(--space-xs);">
-          Best plan: ${scenario.results[0].planName} ($${scenario.results[0].totalAnnualCost.toLocaleString()}/year)
+          Best: ${scenario.results[0].planName} (${scenario.results[0].employer}) - $${scenario.results[0].totalAnnualCost.toLocaleString()}/year
         </p>
       </div>
       <div class="scenario-actions">
@@ -858,7 +886,7 @@ function loadScenarios() {
 }
 
 function loadScenario(id) {
-  const scenarios = JSON.parse(localStorage.getItem('savedScenarios') || '[]');
+  const scenarios = JSON.parse(localStorage.getItem('familySavedScenarios') || '[]');
   const scenario = scenarios.find(s => s.id === id);
 
   if (scenario) {
@@ -872,48 +900,48 @@ function loadScenario(id) {
 function deleteScenario(id) {
   if (!confirm('Are you sure you want to delete this scenario?')) return;
 
-  const scenarios = JSON.parse(localStorage.getItem('savedScenarios') || '[]');
+  const scenarios = JSON.parse(localStorage.getItem('familySavedScenarios') || '[]');
   const filtered = scenarios.filter(s => s.id !== id);
-  localStorage.setItem('savedScenarios', JSON.stringify(filtered));
+  localStorage.setItem('familySavedScenarios', JSON.stringify(filtered));
   loadScenarios();
 }
 
 function clearAllScenarios() {
   if (!confirm('Are you sure you want to delete all saved scenarios?')) return;
 
-  localStorage.removeItem('savedScenarios');
+  localStorage.removeItem('familySavedScenarios');
   loadScenarios();
 }
 
 function resetCalculator() {
   if (!confirm('Reset calculator to default values?')) return;
 
-  // Reset state to defaults
+  // Reset state to defaults for family of 4
   calculatorState.inputs = {
-    coverageTier: 'employee',
-    age: 35,
-    numDependents: 0,
-    primaryVisits: 2,
-    specialistVisits: 0,
-    urgentCareVisits: 0,
+    primaryVisits: 8,
+    specialistVisits: 2,
+    urgentCareVisits: 1,
     erVisits: 0,
-    genericRx: 0,
-    preferredRx: 0,
+    genericRx: 2,
+    preferredRx: 1,
     nonpreferredRx: 0,
-    specialtyRx: 0,
-    plannedProcedures: 0,
-    hasChronicCondition: false
+    includeDental: true,
+    includeVision: true,
+    dentalVisits: 8,
+    dentalWork: 0,
+    visionExams: 4,
+    glassesContacts: 2
   };
 
   calculatorState.results = null;
 
   loadSavedInputs();
-  localStorage.removeItem('calculatorInputs');
+  localStorage.removeItem('familyCalculatorInputs');
 
   // Clear results
   const summaryContainer = document.getElementById('results-summary');
   if (summaryContainer) {
-    summaryContainer.innerHTML = '<p class="empty-state">Enter your information and click "Calculate Costs" to see personalized results.</p>';
+    summaryContainer.innerHTML = '<p class="empty-state">Enter your family\'s information and click "Calculate Costs" to see personalized results for Scott, Liz, Wills & Jack.</p>';
   }
 }
 

@@ -1,6 +1,6 @@
 /**
- * Health Benefits Advisor - Main Script
- * Handles interactivity for recommendations page
+ * Scott & Liz Family Benefits - Main Script
+ * Handles interactivity for family benefits comparison page
  */
 
 // Wait for DOM to be fully loaded
@@ -152,18 +152,18 @@ function initAnimations() {
  */
 function initRecommendationCards() {
   const container = document.getElementById('recommendation-cards');
-  if (!container || typeof healthPlans === 'undefined') return;
+  if (!container || typeof allMedicalPlans === 'undefined') return;
 
-  // Sort plans by estimated cost for healthy individual
-  const sortedPlans = [...healthPlans].sort((a, b) => {
-    return a.estimatedAnnualCosts.averageIndividual.total - b.estimatedAnnualCosts.averageIndividual.total;
+  // Sort plans by estimated moderate cost
+  const sortedPlans = [...allMedicalPlans].sort((a, b) => {
+    const aCost = a.estimatedAnnualCost ? a.estimatedAnnualCost.moderate : 999999;
+    const bCost = b.estimatedAnnualCost ? b.estimatedAnnualCost.moderate : 999999;
+    return aCost - bCost;
   });
 
-  // Mark best value plan
-  const bestValueIndex = 0;
-
+  // Show top recommended plans and alternatives
   sortedPlans.forEach((plan, index) => {
-    const card = createRecommendationCard(plan, index === bestValueIndex);
+    const card = createRecommendationCard(plan, plan.recommended === true);
     container.appendChild(card);
   });
 }
@@ -171,54 +171,81 @@ function initRecommendationCards() {
 /**
  * Create Recommendation Card Element
  */
-function createRecommendationCard(plan, isBestValue) {
+function createRecommendationCard(plan, isRecommended) {
   const card = document.createElement('div');
-  card.className = `recommendation-card ${isBestValue ? 'best-value' : ''}`;
+  card.className = `recommendation-card ${isRecommended ? 'best-value' : ''} ${plan.badge ? 'has-badge' : ''}`;
 
-  const prosHTML = plan.pros.map(pro => `<li>${pro}</li>`).join('');
-  const consHTML = plan.cons.map(con => `<li>${con}</li>`).join('');
+  const prosHTML = plan.pros ? plan.pros.map(pro => `<li>${pro}</li>`).join('') : '';
+  const consHTML = plan.cons ? plan.cons.map(con => `<li>${con}</li>`).join('') : '';
+
+  // Get the appropriate premium (family is what we care about)
+  const monthlyPremium = plan.premiums.family_monthly || plan.premiums.monthly?.family || 0;
+  const annualPremium = plan.premiums.family_annual || plan.premiums.annual?.family || 0;
+
+  // Get deductibles
+  const deductibleIndividual = plan.deductible.individual || 0;
+  const deductibleFamily = plan.deductible.family || 0;
+
+  // Get OOP max
+  const oopMax = plan.oopMax ? (plan.oopMax.family || plan.oopMax.individual || 0) : 0;
+
+  // Get estimated costs
+  const estimatedLow = plan.estimatedAnnualCost ? plan.estimatedAnnualCost.low : null;
+  const estimatedMod = plan.estimatedAnnualCost ? plan.estimatedAnnualCost.moderate : null;
+  const estimatedHigh = plan.estimatedAnnualCost ? plan.estimatedAnnualCost.high : null;
+
+  // Display badge if it exists
+  const badgeHTML = plan.badge ? `<span class="plan-badge">${plan.badge}</span>` : '';
 
   card.innerHTML = `
+    ${badgeHTML}
     <div class="plan-header">
       <h3 class="plan-name">${plan.name}</h3>
       <p class="plan-category">${plan.category}</p>
-      <p class="plan-carrier">${plan.carrier}</p>
+      <p class="plan-carrier">${plan.employer} - ${plan.carrier}</p>
     </div>
 
     <div class="plan-cost">
-      <span class="cost-amount">$${plan.premiums.monthly.employee}</span>
-      <span class="cost-period">/month (employee only)</span>
+      <span class="cost-amount">$${monthlyPremium.toFixed(2)}</span>
+      <span class="cost-period">/month (family of 4)</span>
     </div>
 
     <div class="plan-details">
       <div class="detail-row">
         <span class="detail-label">Annual Premium</span>
-        <span class="detail-value">$${plan.premiums.annual.employee.toLocaleString()}</span>
+        <span class="detail-value">$${annualPremium.toLocaleString()}</span>
       </div>
       <div class="detail-row">
-        <span class="detail-label">Deductible</span>
-        <span class="detail-value">$${plan.deductible.individual.toLocaleString()}</span>
+        <span class="detail-label">Individual Deductible</span>
+        <span class="detail-value">$${deductibleIndividual.toLocaleString()}</span>
       </div>
       <div class="detail-row">
-        <span class="detail-label">Out-of-Pocket Max</span>
-        <span class="detail-value">$${plan.outOfPocketMax.individual.toLocaleString()}</span>
+        <span class="detail-label">Family Deductible</span>
+        <span class="detail-value">$${deductibleFamily.toLocaleString()}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Family Out-of-Pocket Max</span>
+        <span class="detail-value">$${oopMax.toLocaleString()}</span>
       </div>
       <div class="detail-row">
         <span class="detail-label">Network</span>
-        <span class="detail-value">${plan.network.type}</span>
+        <span class="detail-value">${plan.network || 'N/A'}</span>
       </div>
-      ${plan.hsaEligible ? `
+      ${plan.hsa && plan.hsa.eligible ? `
       <div class="detail-row">
-        <span class="detail-label">Employer HSA Contribution</span>
-        <span class="detail-value">$${plan.employerHSAContribution.employee.toLocaleString()}</span>
+        <span class="detail-label">HSA Employer Match</span>
+        <span class="detail-value">$${plan.hsa.employerContribution.toLocaleString()}</span>
       </div>
       ` : ''}
+      ${estimatedMod ? `
       <div class="detail-row">
-        <span class="detail-label">Est. Annual Cost (Avg.)</span>
-        <span class="detail-value">$${plan.estimatedAnnualCosts.averageIndividual.total.toLocaleString()}</span>
+        <span class="detail-label">Est. Annual Total (Moderate Use)</span>
+        <span class="detail-value">$${estimatedMod.toLocaleString()}</span>
       </div>
+      ` : ''}
     </div>
 
+    ${prosHTML && consHTML ? `
     <div class="pros-cons">
       <h4 style="color: var(--success-color);">Advantages</h4>
       <ul class="pros">
@@ -230,16 +257,17 @@ function createRecommendationCard(plan, isBestValue) {
         ${consHTML}
       </ul>
     </div>
+    ` : ''}
 
+    ${plan.bestFor ? `
     <div class="best-for-tags">
-      ${plan.bestFor.map(persona => {
-        const personaData = personas[persona];
-        return `<span class="persona-tag" title="${personaData ? personaData.description : ''}">${personaData ? personaData.name : persona}</span>`;
-      }).join('')}
+      <strong style="display: block; margin-bottom: 8px; font-size: 0.9em;">Best For:</strong>
+      <p style="font-size: 0.9em; color: var(--text-secondary);">${plan.bestFor}</p>
     </div>
+    ` : ''}
 
     <div style="margin-top: var(--space-lg);">
-      <a href="calculator.html" class="btn btn-primary btn-block">Calculate My Costs</a>
+      <a href="calculator.html" class="btn btn-primary btn-block">Calculate Costs for Your Family</a>
     </div>
   `;
 
@@ -253,6 +281,7 @@ function initPersonaCards() {
   const container = document.getElementById('persona-cards');
   if (!container || typeof personas === 'undefined') return;
 
+  // Show the current family persona
   Object.entries(personas).forEach(([key, persona]) => {
     const card = createPersonaCard(key, persona);
     container.appendChild(card);
@@ -267,91 +296,35 @@ function createPersonaCard(key, persona) {
   card.className = 'persona-card';
   card.setAttribute('data-persona', key);
 
-  const prioritiesHTML = persona.priorities.map(priority => `<li>${priority}</li>`).join('');
+  const prioritiesHTML = persona.priorities ? persona.priorities.map(priority => `<li>${priority}</li>`).join('') : '';
 
   card.innerHTML = `
     <h3 class="persona-name">${persona.name}</h3>
     <p class="persona-description">${persona.description}</p>
 
+    ${prioritiesHTML ? `
     <div class="persona-priorities">
       <h4>Top Priorities</h4>
       <ul>
         ${prioritiesHTML}
       </ul>
     </div>
+    ` : ''}
 
-    <p style="margin-top: var(--space-md); font-size: var(--font-size-sm); color: var(--text-tertiary);">
-      <strong>Typical Usage:</strong> ${persona.typicalUsage}
-    </p>
+    ${persona.recommendedMedical ? `
+    <div style="margin-top: var(--space-md); padding: var(--space-sm); background: var(--bg-secondary); border-radius: 8px;">
+      <strong>Recommended Medical:</strong> ${allMedicalPlans.find(p => p.id === persona.recommendedMedical)?.name || persona.recommendedMedical}
+    </div>
+    ` : ''}
+
+    ${persona.recommendedDental ? `
+    <div style="margin-top: var(--space-sm); padding: var(--space-sm); background: var(--bg-secondary); border-radius: 8px;">
+      <strong>Recommended Dental:</strong> ${persona.recommendedDental}
+    </div>
+    ` : ''}
   `;
 
-  // Add click handler
-  card.addEventListener('click', () => {
-    // Remove selected class from all cards
-    document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('selected'));
-
-    // Add selected class to clicked card
-    card.classList.add('selected');
-
-    // Show recommended plans for this persona
-    highlightRecommendedPlans(key);
-
-    // Scroll to recommendations
-    document.getElementById('recommendations')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-
   return card;
-}
-
-/**
- * Highlight Recommended Plans for Persona
- */
-function highlightRecommendedPlans(personaKey) {
-  const recommendationCards = document.querySelectorAll('.recommendation-card');
-
-  recommendationCards.forEach(card => {
-    const tags = card.querySelectorAll('.persona-tag');
-    let isRecommended = false;
-
-    tags.forEach(tag => {
-      const personaData = Object.values(personas).find(p => p.name === tag.textContent);
-      if (personaData) {
-        const personaId = Object.keys(personas).find(k => personas[k] === personaData);
-        if (personaId === personaKey) {
-          isRecommended = true;
-          tag.style.background = 'var(--primary-color)';
-          tag.style.color = 'white';
-        } else {
-          tag.style.background = '';
-          tag.style.color = '';
-        }
-      }
-    });
-
-    // Add subtle highlight to recommended cards
-    if (isRecommended) {
-      card.style.borderColor = 'var(--primary-color)';
-      card.style.transform = 'scale(1.02)';
-    } else {
-      card.style.borderColor = '';
-      card.style.transform = '';
-      card.style.opacity = '0.6';
-    }
-  });
-
-  // Reset after 5 seconds
-  setTimeout(() => {
-    recommendationCards.forEach(card => {
-      card.style.opacity = '';
-      card.style.borderColor = '';
-      card.style.transform = '';
-      const tags = card.querySelectorAll('.persona-tag');
-      tags.forEach(tag => {
-        tag.style.background = '';
-        tag.style.color = '';
-      });
-    });
-  }, 5000);
 }
 
 /**
@@ -361,14 +334,14 @@ function initComparisonTable() {
   const table = document.getElementById('comparison-table');
   const tbody = document.getElementById('comparison-tbody');
 
-  if (!table || !tbody || typeof healthPlans === 'undefined') return;
+  if (!table || !tbody || typeof allMedicalPlans === 'undefined') return;
 
   // Add plan headers
   const thead = table.querySelector('thead tr');
-  healthPlans.forEach(plan => {
+  allMedicalPlans.forEach(plan => {
     const th = document.createElement('th');
     th.scope = 'col';
-    th.innerHTML = `<strong>${plan.name}</strong><br><small class="employer-badge">${plan.employer || plan.carrier}</small><br><small>${plan.planYear}</small>`;
+    th.innerHTML = `<strong>${plan.name}</strong><br><small class="employer-badge">${plan.employer}</small><br><small>${plan.planYear}</small>`;
     thead.appendChild(th);
   });
 
@@ -399,43 +372,39 @@ function updateComparisonTable(view) {
 
   const rows = {
     overview: [
-      { label: 'Monthly Premium (Employee)', getValue: p => `$${p.premiums.monthly.employee}` },
-      { label: 'Annual Premium (Employee)', getValue: p => `$${p.premiums.annual.employee.toLocaleString()}` },
-      { label: 'Deductible (Individual)', getValue: p => `$${p.deductible.individual.toLocaleString()}` },
-      { label: 'Out-of-Pocket Max', getValue: p => `$${p.outOfPocketMax.individual.toLocaleString()}` },
-      { label: 'Network Type', getValue: p => p.network.type },
-      { label: 'Network Size', getValue: p => p.network.size },
-      { label: 'HSA Eligible', getValue: p => p.hsaEligible ? 'Yes' : 'No' },
-      { label: 'Employer HSA Contribution', getValue: p => p.hsaEligible ? `$${p.employerHSAContribution.employee}` : 'N/A' }
+      { label: 'Monthly Premium (Family)', getValue: p => `$${(p.premiums.family_monthly || p.premiums.monthly?.family || 0).toFixed(2)}` },
+      { label: 'Annual Premium (Family)', getValue: p => `$${(p.premiums.family_annual || p.premiums.annual?.family || 0).toLocaleString()}` },
+      { label: 'Individual Deductible', getValue: p => `$${(p.deductible.individual || 0).toLocaleString()}` },
+      { label: 'Family Deductible', getValue: p => `$${(p.deductible.family || 0).toLocaleString()}` },
+      { label: 'Deductible Type', getValue: p => p.deductible.type || 'N/A' },
+      { label: 'Family OOP Max', getValue: p => `$${(p.oopMax?.family || p.oopMax?.individual || 0).toLocaleString()}` },
+      { label: 'Network', getValue: p => p.network || 'N/A' },
+      { label: 'HSA Eligible', getValue: p => p.hsa?.eligible ? 'Yes' : 'No' },
+      { label: 'HSA Employer Match', getValue: p => p.hsa?.eligible ? `$${p.hsa.employerContribution}` : 'N/A' }
     ],
     costs: [
-      { label: 'Monthly Premium (Employee)', getValue: p => `$${p.premiums.monthly.employee}` },
-      { label: 'Monthly Premium (Family)', getValue: p => `$${p.premiums.monthly.family}` },
-      { label: 'Annual Premium (Employee)', getValue: p => `$${p.premiums.annual.employee.toLocaleString()}` },
-      { label: 'Annual Premium (Family)', getValue: p => `$${p.premiums.annual.family.toLocaleString()}` },
-      { label: 'Deductible (Individual)', getValue: p => `$${p.deductible.individual.toLocaleString()}` },
-      { label: 'Deductible (Family)', getValue: p => `$${p.deductible.family.toLocaleString()}` },
-      { label: 'Out-of-Pocket Max (Individual)', getValue: p => `$${p.outOfPocketMax.individual.toLocaleString()}` },
-      { label: 'Out-of-Pocket Max (Family)', getValue: p => `$${p.outOfPocketMax.family.toLocaleString()}` },
-      { label: 'Coinsurance', getValue: p => `${p.coinsurance}%` },
-      { label: 'Est. Cost (Healthy Individual)', getValue: p => `$${p.estimatedAnnualCosts.healthyIndividual.total.toLocaleString()}` },
-      { label: 'Est. Cost (Average Individual)', getValue: p => `$${p.estimatedAnnualCosts.averageIndividual.total.toLocaleString()}` },
-      { label: 'Est. Cost (Chronic Condition)', getValue: p => `$${p.estimatedAnnualCosts.chronicCondition.total.toLocaleString()}` },
-      { label: 'Est. Cost (Family)', getValue: p => `$${p.estimatedAnnualCosts.family.total.toLocaleString()}` }
+      { label: 'Monthly Premium', getValue: p => `$${(p.premiums.family_monthly || 0).toFixed(2)}` },
+      { label: 'Annual Premium', getValue: p => `$${(p.premiums.family_annual || 0).toLocaleString()}` },
+      { label: 'Surcharge (if applicable)', getValue: p => p.surcharge ? `$${p.surcharge.workingSpouse || 0}/month` : 'None' },
+      { label: 'Individual Deductible', getValue: p => `$${(p.deductible.individual || 0).toLocaleString()}` },
+      { label: 'Family Deductible', getValue: p => `$${(p.deductible.family || 0).toLocaleString()}` },
+      { label: 'Family OOP Max', getValue: p => `$${(p.oopMax?.family || 0).toLocaleString()}` },
+      { label: 'Coinsurance', getValue: p => p.coinsurance || 'N/A' },
+      { label: 'Est. Cost (Low Usage)', getValue: p => p.estimatedAnnualCost?.low ? `$${p.estimatedAnnualCost.low.toLocaleString()}` : 'N/A' },
+      { label: 'Est. Cost (Moderate Usage)', getValue: p => p.estimatedAnnualCost?.moderate ? `$${p.estimatedAnnualCost.moderate.toLocaleString()}` : 'N/A' },
+      { label: 'Est. Cost (High Usage)', getValue: p => p.estimatedAnnualCost?.high ? `$${p.estimatedAnnualCost.high.toLocaleString()}` : 'N/A' }
     ],
     coverage: [
-      { label: 'Primary Care Visit', getValue: p => p.coverage.primaryCare.cost },
-      { label: 'Specialist Visit', getValue: p => p.coverage.specialist.cost },
-      { label: 'Urgent Care', getValue: p => p.coverage.urgentCare.cost },
-      { label: 'Emergency Room', getValue: p => p.coverage.emergency.cost },
-      { label: 'Generic Rx', getValue: p => p.coverage.prescription.generic },
-      { label: 'Preferred Brand Rx', getValue: p => p.coverage.prescription.preferred },
-      { label: 'Non-Preferred Rx', getValue: p => p.coverage.prescription.nonPreferred },
-      { label: 'Specialty Rx', getValue: p => p.coverage.prescription.specialty },
-      { label: 'Dental Coverage', getValue: p => p.coverage.dental.included ? 'Included' : 'Not Included' },
-      { label: 'Dental Preventive', getValue: p => p.coverage.dental.preventive },
-      { label: 'Vision Coverage', getValue: p => p.coverage.vision.included ? 'Included' : 'Not Included' },
-      { label: 'Vision Exam', getValue: p => p.coverage.vision.exam }
+      { label: 'Primary Care Visit', getValue: p => typeof p.copays?.pcp === 'number' ? `$${p.copays.pcp}` : (p.copays?.pcp || 'N/A') },
+      { label: 'Specialist Visit', getValue: p => typeof p.copays?.specialist === 'number' ? `$${p.copays.specialist}` : (p.copays?.specialist || 'N/A') },
+      { label: 'Urgent Care', getValue: p => typeof p.copays?.urgentCare === 'number' ? `$${p.copays.urgentCare}` : (p.copays?.urgentCare || 'N/A') },
+      { label: 'Emergency Room', getValue: p => typeof p.copays?.er === 'number' ? `$${p.copays.er}` : (p.copays?.er || 'N/A') },
+      { label: 'Generic Rx (Tier 1)', getValue: p => p.rx?.tier1_retail ? `$${p.rx.tier1_retail}` : (p.rx?.tier1 || 'N/A') },
+      { label: 'Preferred Brand Rx (Tier 2)', getValue: p => p.rx?.tier2_retail ? `$${p.rx.tier2_retail}` : (p.rx?.tier2 || 'N/A') },
+      { label: 'Non-Preferred Rx (Tier 3)', getValue: p => p.rx?.tier3_retail ? `$${p.rx.tier3_retail}` : (p.rx?.tier3 || 'N/A') },
+      { label: 'Rx Deductible Required', getValue: p => p.rx?.deductible ? 'Yes' : 'No' },
+      { label: 'PCP Required', getValue: p => p.requirements?.pcpRequired ? 'Yes' : 'No' },
+      { label: 'Referrals Required', getValue: p => p.requirements?.referralsRequired ? 'Yes' : 'No' }
     ]
   };
 
@@ -449,9 +418,13 @@ function updateComparisonTable(view) {
     labelCell.textContent = row.label;
     tr.appendChild(labelCell);
 
-    healthPlans.forEach(plan => {
+    allMedicalPlans.forEach(plan => {
       const td = document.createElement('td');
-      td.textContent = row.getValue(plan);
+      try {
+        td.textContent = row.getValue(plan);
+      } catch (e) {
+        td.textContent = 'N/A';
+      }
       tr.appendChild(td);
     });
 
@@ -466,7 +439,7 @@ let costChart = null;
 
 function initCostChart() {
   const canvas = document.getElementById('costComparisonChart');
-  if (!canvas || typeof healthPlans === 'undefined' || typeof Chart === 'undefined') return;
+  if (!canvas || typeof allMedicalPlans === 'undefined' || typeof Chart === 'undefined') return;
 
   const ctx = canvas.getContext('2d');
 
@@ -482,8 +455,8 @@ function initCostChart() {
     });
   });
 
-  // Initial chart
-  updateCostChart('healthyIndividual');
+  // Initial chart - use "averageIndividual" as fallback scenario name
+  updateCostChart('moderate');
 }
 
 /**
@@ -495,9 +468,19 @@ function updateCostChart(scenario) {
 
   const ctx = canvas.getContext('2d');
 
-  const labels = healthPlans.map(p => p.name);
-  const data = healthPlans.map(p => p.estimatedAnnualCosts[scenario].total);
-  const minCost = Math.min(...data);
+  // Map old scenario names to new ones
+  const scenarioMap = {
+    'healthyIndividual': 'low',
+    'averageIndividual': 'moderate',
+    'chronicCondition': 'high',
+    'family': 'moderate'
+  };
+
+  const actualScenario = scenarioMap[scenario] || scenario || 'moderate';
+
+  const labels = allMedicalPlans.map(p => p.name);
+  const data = allMedicalPlans.map(p => p.estimatedAnnualCost?.[actualScenario] || 0);
+  const minCost = Math.min(...data.filter(d => d > 0));
 
   // Destroy existing chart
   if (costChart) {
@@ -535,12 +518,10 @@ function updateCostChart(scenario) {
               return 'Total Cost: $' + context.parsed.y.toLocaleString();
             },
             afterLabel: function(context) {
-              const plan = healthPlans[context.dataIndex];
-              const scenarioData = plan.estimatedAnnualCosts[scenario];
+              const plan = allMedicalPlans[context.dataIndex];
               return [
-                `Premiums: $${scenarioData.premiums.toLocaleString()}`,
-                `Medical: $${scenarioData.expectedMedical.toLocaleString()}`,
-                scenarioData.hsaContribution < 0 ? `HSA Credit: $${Math.abs(scenarioData.hsaContribution).toLocaleString()}` : ''
+                `Premium: $${(plan.premiums.family_annual || 0).toLocaleString()}`,
+                plan.hsa?.eligible ? `HSA Match: $${plan.hsa.employerContribution}` : ''
               ].filter(Boolean);
             }
           }
@@ -561,7 +542,9 @@ function updateCostChart(scenario) {
         },
         x: {
           ticks: {
-            color: textColor
+            color: textColor,
+            maxRotation: 45,
+            minRotation: 45
           },
           grid: {
             display: false
@@ -639,7 +622,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
  */
 document.documentElement.addEventListener('themechange', () => {
   if (costChart) {
-    const currentScenario = document.querySelector('.chart-btn.active')?.dataset.scenario || 'healthyIndividual';
+    const currentScenario = document.querySelector('.chart-btn.active')?.dataset.scenario || 'moderate';
     updateCostChart(currentScenario);
   }
 });
