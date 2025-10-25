@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Test</title>
+</head>
+<body>
+  <h1>Data Loading Test</h1>
+  <div id="output"></div>
+
+  <script src="data.js"></script>
+  <script>
+    const output = document.getElementById('output');
+
+    // Test if data loaded
+    if (typeof allMedicalPlans !== 'undefined') {
+      output.innerHTML += '<p style="color: green;">✓ allMedicalPlans loaded: ' + allMedicalPlans.length + ' plans</p>';
+      output.innerHTML += '<pre>' + JSON.stringify(allMedicalPlans[0], null, 2).substring(0, 500) + '...</pre>';
+    } else {
+      output.innerHTML += '<p style="color: red;">✗ allMedicalPlans NOT loaded</p>';
+    }
+
+    if (typeof dentalPlans !== 'undefined') {
+      output.innerHTML += '<p style="color: green;">✓ dentalPlans loaded</p>';
+      output.innerHTML += '<p>USG dental plans: ' + (Array.isArray(dentalPlans.usg) ? dentalPlans.usg.length : 'object') + '</p>';
+    } else {
+      output.innerHTML += '<p style="color: red;">✗ dentalPlans NOT loaded</p>';
+    }
+
+    if (typeof visionPlans !== 'undefined') {
+      output.innerHTML += '<p style="color: green;">✓ visionPlans loaded</p>';
+    } else {
+      output.innerHTML += '<p style="color: red;">✗ visionPlans NOT loaded</p>';
+    }
+
+    if (typeof personas !== 'undefined') {
+      output.innerHTML += '<p style="color: green;">✓ personas loaded</p>';
+    } else {
+      output.innerHTML += '<p style="color: red;">✗ personas NOT loaded</p>';
+    }
+
+    // Test calculator function
+    output.innerHTML += '<hr><h2>Calculator Test</h2>';
+    output.innerHTML += '<button onclick="testCalculator()">Test Calculator</button>';
+    output.innerHTML += '<div id="calc-result"></div>';
+
+    function testCalculator() {
+      const calcResult = document.getElementById('calc-result');
+      try {
+        if (typeof allMedicalPlans === 'undefined') {
+          calcResult.innerHTML = '<p style="color: red;">Error: allMedicalPlans is undefined</p>';
+          return;
+        }
+        calcResult.innerHTML = '<p>Testing with ' + allMedicalPlans.length + ' plans...</p>';
+
+        // Try to access first plan
+        const plan = allMedicalPlans[0];
+        calcResult.innerHTML += '<p>First plan: ' + plan.name + '</p>';
+        calcResult.innerHTML += '<p>Premium: $' + plan.premiums.family_monthly + '/month</p>';
+
+      } catch (error) {
+        calcResult.innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+        calcResult.innerHTML += '<pre>' + error.stack + '</pre>';
+      }
+    }
+  </script>
+</body>
+</html>

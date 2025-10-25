@@ -543,8 +543,8 @@ const dentalPlans = {
       carrier: 'Delta Dental',
 
       premiums: {
-        family_monthly: 41.04,
-        family_annual: 492.48
+        family_monthly: 117.96,
+        family_annual: 1415.52
       },
 
       deductible: {
