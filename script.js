@@ -368,7 +368,7 @@ function initComparisonTable() {
   healthPlans.forEach(plan => {
     const th = document.createElement('th');
     th.scope = 'col';
-    th.innerHTML = `<strong>${plan.name}</strong><br><small>${plan.carrier}</small>`;
+    th.innerHTML = `<strong>${plan.name}</strong><br><small class="employer-badge">${plan.employer || plan.carrier}</small><br><small>${plan.planYear}</small>`;
     thead.appendChild(th);
   });
 
