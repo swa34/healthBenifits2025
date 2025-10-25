@@ -124,29 +124,46 @@ function initCalculateButton() {
  * Perform the main calculation
  */
 function performCalculation() {
+  console.log('performCalculation called');
+  console.log('allMedicalPlans defined?', typeof allMedicalPlans !== 'undefined');
+
   if (typeof allMedicalPlans === 'undefined') {
     console.error('Medical plans data not loaded');
     alert('Error: Plan data not loaded. Please refresh the page.');
     return;
   }
 
-  // Calculate costs for each medical plan
-  const results = allMedicalPlans.map(plan => {
-    return calculatePlanCost(plan, calculatorState.inputs);
-  });
+  console.log('Number of plans:', allMedicalPlans.length);
 
-  // Sort by total cost
-  results.sort((a, b) => a.totalAnnualCost - b.totalAnnualCost);
+  try {
+    // Calculate costs for each medical plan
+    const results = allMedicalPlans.map(plan => {
+      console.log('Calculating for plan:', plan.name);
+      return calculatePlanCost(plan, calculatorState.inputs);
+    });
 
-  calculatorState.results = results;
+    console.log('Calculation complete, results:', results.length);
 
-  // Display results
-  displayResults(results);
+    // Sort by total cost
+    results.sort((a, b) => a.totalAnnualCost - b.totalAnnualCost);
 
-  // Scroll to results
-  const resultsSection = document.querySelector('.calculator-results');
-  if (resultsSection) {
-    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    calculatorState.results = results;
+
+    console.log('Displaying results...');
+    // Display results
+    displayResults(results);
+
+    // Scroll to results
+    const resultsSection = document.querySelector('.calculator-results');
+    if (resultsSection) {
+      console.log('Scrolling to results');
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      console.error('Results section not found');
+    }
+  } catch (error) {
+    console.error('Error in performCalculation:', error);
+    alert('Error calculating costs: ' + error.message);
   }
 }
 
@@ -154,9 +171,10 @@ function performCalculation() {
  * Calculate cost for a specific plan
  */
 function calculatePlanCost(plan, inputs) {
-  // Base premium (always family for this calculator)
-  const monthlyPremium = plan.premiums.family_monthly || 0;
-  const annualPremium = plan.premiums.family_annual || 0;
+  try {
+    // Base premium (always family for this calculator)
+    const monthlyPremium = plan.premiums.family_monthly || 0;
+    const annualPremium = plan.premiums.family_annual || 0;
 
   // Add surcharge if applicable
   const surchargeMonthly = plan.surcharge?.workingSpouse || 0;
@@ -277,6 +295,10 @@ function calculatePlanCost(plan, inputs) {
       surcharge: surchargeAnnual
     }
   };
+  } catch (error) {
+    console.error('Error calculating plan:', plan?.name, error);
+    throw error;
+  }
 }
 
 /**
