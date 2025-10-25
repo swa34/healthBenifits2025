@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Interactive health benefits calculator to estimate and compare your total annual healthcare costs across different insurance plans.">
-  <meta name="author" content="Health Benefits Advisor">
+  <meta name="description" content="Family benefits calculator for Scott, Liz, Wills, and Jack - Calculate costs for USG and Zaxbys plans including medical, dental, and vision.">
+  <meta name="author" content="Scott & Liz Family Benefits">
 
-  <meta property="og:title" content="Health Benefits Calculator - Personalized Cost Estimates">
-  <meta property="og:description" content="Calculate your healthcare costs with our interactive tool. Compare plans and find the best value.">
+  <meta property="og:title" content="Scott & Liz Family Calculator - USG vs Zaxbys">
+  <meta property="og:description" content="Calculate healthcare costs for your family of 4 across all benefit options.">
   <meta property="og:type" content="website">
 
-  <title>Health Benefits Calculator - Interactive Cost Analysis</title>
+  <title>Scott & Liz Family Benefits Calculator</title>
 
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -28,7 +28,7 @@
               <path d="M16 2L2 9V15C2 23 8 29.5 16 30C24 29.5 30 23 30 15V9L16 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               <path d="M10 16L14 20L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <a href="index.html" style="color: inherit; text-decoration: none;">Health Benefits Advisor</a>
+            <a href="index.html" style="color: inherit; text-decoration: none;">Scott & Liz Family Benefits</a>
           </h1>
         </div>
 
@@ -65,8 +65,8 @@
     <!-- Calculator Hero -->
     <section class="calculator-hero">
       <div class="container">
-        <h2>Interactive Benefits Calculator</h2>
-        <p>Get personalized cost estimates based on your healthcare needs and usage patterns</p>
+        <h2>Family Benefits Calculator</h2>
+        <p>Calculate total costs for Scott, Liz, Wills & Jack including medical, dental, and vision benefits</p>
 
         <div class="calculator-actions">
           <button id="reset-calculator" class="btn btn-secondary">
@@ -101,125 +101,144 @@
           <!-- Input Panel -->
           <aside class="calculator-inputs" role="form" aria-label="Calculator inputs">
             <div class="input-section">
-              <h3 class="input-section-title">Personal Information</h3>
+              <h3 class="input-section-title">Family Information</h3>
 
               <div class="form-group">
-                <label for="coverage-tier">Coverage Tier</label>
-                <select id="coverage-tier" class="form-control">
-                  <option value="employee">Employee Only</option>
-                  <option value="employeeSpouse">Employee + Spouse</option>
-                  <option value="employeeChildren">Employee + Children</option>
-                  <option value="family">Family (Employee + Spouse + Children)</option>
-                </select>
+                <label>Family Coverage</label>
+                <div class="family-info-display">
+                  <strong>Scott, Liz, Wills & Jack (4 people)</strong>
+                  <p style="margin: 5px 0; color: #666; font-size: 0.9em;">
+                    Scott: USG employee<br>
+                    Liz: Zaxbys employee<br>
+                    Children: Wills & Jack
+                  </p>
+                </div>
               </div>
 
               <div class="form-group">
-                <label for="age">Your Age</label>
-                <input type="number" id="age" class="form-control" min="18" max="99" value="35" aria-describedby="age-help">
-                <small id="age-help" class="form-help">Age affects some cost estimates</small>
-              </div>
-
-              <div class="form-group">
-                <label for="num-dependents">Number of Dependents</label>
-                <input type="number" id="num-dependents" class="form-control" min="0" max="10" value="0" aria-describedby="dependents-help">
-                <small id="dependents-help" class="form-help">Spouse and/or children</small>
+                <label>Benefits to Include</label>
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="include-medical" class="form-checkbox" checked disabled>
+                    <span>Medical (Required)</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="include-dental" class="form-checkbox" checked>
+                    <span>Dental</span>
+                  </label>
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="include-vision" class="form-checkbox" checked>
+                    <span>Vision</span>
+                  </label>
+                </div>
               </div>
             </div>
 
             <div class="input-section">
-              <h3 class="input-section-title">Expected Healthcare Usage</h3>
+              <h3 class="input-section-title">Expected Healthcare Usage (Annual)</h3>
 
               <div class="form-group">
-                <label for="primary-visits">Primary Care Visits (Annual)</label>
+                <label for="primary-visits">Primary Care Visits for Entire Family</label>
                 <div class="slider-container">
-                  <input type="range" id="primary-visits" class="form-slider" min="0" max="24" value="2" aria-describedby="primary-help">
-                  <output for="primary-visits" class="slider-value">2</output>
+                  <input type="range" id="primary-visits" class="form-slider" min="0" max="40" value="8" aria-describedby="primary-help">
+                  <output for="primary-visits" class="slider-value">8</output>
                 </div>
-                <small id="primary-help" class="form-help">Routine checkups, sick visits</small>
+                <small id="primary-help" class="form-help">Checkups, sick visits for all 4 family members</small>
               </div>
 
               <div class="form-group">
-                <label for="specialist-visits">Specialist Visits (Annual)</label>
+                <label for="specialist-visits">Specialist Visits</label>
                 <div class="slider-container">
-                  <input type="range" id="specialist-visits" class="form-slider" min="0" max="24" value="0" aria-describedby="specialist-help">
-                  <output for="specialist-visits" class="slider-value">0</output>
+                  <input type="range" id="specialist-visits" class="form-slider" min="0" max="30" value="2" aria-describedby="specialist-help">
+                  <output for="specialist-visits" class="slider-value">2</output>
                 </div>
-                <small id="specialist-help" class="form-help">Cardiologist, dermatologist, etc.</small>
+                <small id="specialist-help" class="form-help">Total for whole family</small>
               </div>
 
               <div class="form-group">
-                <label for="urgent-care-visits">Urgent Care Visits (Annual)</label>
+                <label for="urgent-care-visits">Urgent Care Visits</label>
                 <div class="slider-container">
-                  <input type="range" id="urgent-care-visits" class="form-slider" min="0" max="12" value="0" aria-describedby="urgent-help">
-                  <output for="urgent-care-visits" class="slider-value">0</output>
+                  <input type="range" id="urgent-care-visits" class="form-slider" min="0" max="12" value="1" aria-describedby="urgent-help">
+                  <output for="urgent-care-visits" class="slider-value">1</output>
                 </div>
-                <small id="urgent-help" class="form-help">After-hours or walk-in care</small>
+                <small id="urgent-help" class="form-help">Walk-in care for family</small>
               </div>
 
               <div class="form-group">
-                <label for="er-visits">Emergency Room Visits (Annual)</label>
+                <label for="er-visits">Emergency Room Visits</label>
                 <div class="slider-container">
                   <input type="range" id="er-visits" class="form-slider" min="0" max="6" value="0" aria-describedby="er-help">
                   <output for="er-visits" class="slider-value">0</output>
                 </div>
-                <small id="er-help" class="form-help">Emergency department visits</small>
+                <small id="er-help" class="form-help">ER visits for family</small>
               </div>
             </div>
 
             <div class="input-section">
-              <h3 class="input-section-title">Prescription Medications</h3>
+              <h3 class="input-section-title">Prescription Medications (Monthly)</h3>
 
               <div class="form-group">
-                <label for="generic-rx">Generic Prescriptions (Monthly)</label>
+                <label for="generic-rx">Generic Prescriptions</label>
                 <div class="slider-container">
-                  <input type="range" id="generic-rx" class="form-slider" min="0" max="20" value="0" aria-describedby="generic-help">
-                  <output for="generic-rx" class="slider-value">0</output>
+                  <input type="range" id="generic-rx" class="form-slider" min="0" max="20" value="2" aria-describedby="generic-help">
+                  <output for="generic-rx" class="slider-value">2</output>
                 </div>
-                <small id="generic-help" class="form-help">Most common medications</small>
+                <small id="generic-help" class="form-help">Total monthly for all family</small>
               </div>
 
               <div class="form-group">
-                <label for="preferred-rx">Preferred Brand Prescriptions (Monthly)</label>
+                <label for="preferred-rx">Preferred Brand Prescriptions</label>
                 <div class="slider-container">
-                  <input type="range" id="preferred-rx" class="form-slider" min="0" max="10" value="0" aria-describedby="preferred-help">
-                  <output for="preferred-rx" class="slider-value">0</output>
+                  <input type="range" id="preferred-rx" class="form-slider" min="0" max="10" value="1" aria-describedby="preferred-help">
+                  <output for="preferred-rx" class="slider-value">1</output>
                 </div>
                 <small id="preferred-help" class="form-help">Brand name on formulary</small>
               </div>
 
               <div class="form-group">
-                <label for="nonpreferred-rx">Non-Preferred Brand Prescriptions (Monthly)</label>
+                <label for="nonpreferred-rx">Non-Preferred Brand Prescriptions</label>
                 <div class="slider-container">
                   <input type="range" id="nonpreferred-rx" class="form-slider" min="0" max="10" value="0" aria-describedby="nonpreferred-help">
                   <output for="nonpreferred-rx" class="slider-value">0</output>
                 </div>
-                <small id="nonpreferred-help" class="form-help">Brand name not on formulary</small>
-              </div>
-
-              <div class="form-group">
-                <label for="specialty-rx">Specialty Medications (Monthly)</label>
-                <div class="slider-container">
-                  <input type="range" id="specialty-rx" class="form-slider" min="0" max="5" value="0" aria-describedby="specialty-help">
-                  <output for="specialty-rx" class="slider-value">0</output>
-                </div>
-                <small id="specialty-help" class="form-help">High-cost specialty drugs</small>
+                <small id="nonpreferred-help" class="form-help">Higher-tier medications</small>
               </div>
             </div>
 
             <div class="input-section">
-              <h3 class="input-section-title">Additional Expenses</h3>
+              <h3 class="input-section-title">Dental & Vision Usage (If Enrolled)</h3>
 
               <div class="form-group">
-                <label for="planned-procedures">Planned Procedures/Surgeries</label>
-                <input type="number" id="planned-procedures" class="form-control" min="0" max="100000" step="100" value="0" aria-describedby="procedures-help">
-                <small id="procedures-help" class="form-help">Estimated cost before insurance</small>
+                <label for="dental-visits">Dental Cleanings/Exams (Annual)</label>
+                <div class="slider-container">
+                  <input type="range" id="dental-visits" class="form-slider" min="0" max="12" value="8" aria-describedby="dental-help">
+                  <output for="dental-visits" class="slider-value">8</output>
+                </div>
+                <small id="dental-help" class="form-help">2 per person typical (preventive 100% covered)</small>
               </div>
 
               <div class="form-group">
-                <label>
-                  <input type="checkbox" id="has-chronic-condition" class="form-checkbox">
-                  I have chronic condition(s) requiring ongoing care
-                </label>
+                <label for="dental-work">Estimated Dental Work Cost (Annual)</label>
+                <input type="number" id="dental-work" class="form-control" min="0" max="20000" step="100" value="0" aria-describedby="dental-work-help">
+                <small id="dental-work-help" class="form-help">Fillings, crowns, orthodontia (before insurance)</small>
+              </div>
+
+              <div class="form-group">
+                <label for="vision-exams">Vision Exams (Annual)</label>
+                <div class="slider-container">
+                  <input type="range" id="vision-exams" class="form-slider" min="0" max="4" value="4" aria-describedby="vision-help">
+                  <output for="vision-exams" class="slider-value">4</output>
+                </div>
+                <small id="vision-help" class="form-help">Once per year per person typical</small>
+              </div>
+
+              <div class="form-group">
+                <label for="glasses-contacts">Glasses/Contacts Needed</label>
+                <div class="slider-container">
+                  <input type="range" id="glasses-contacts" class="form-slider" min="0" max="4" value="2" aria-describedby="glasses-help">
+                  <output for="glasses-contacts" class="slider-value">2</output>
+                </div>
+                <small id="glasses-help" class="form-help">Number of family members needing glasses/contacts</small>
               </div>
             </div>
 
@@ -302,9 +321,9 @@
 
             <!-- Recommendations based on inputs -->
             <div class="personalized-recommendations">
-              <h3>Recommended for Your Situation</h3>
+              <h3>Recommended for Scott, Liz, Wills & Jack</h3>
               <div id="personalized-rec" class="recommendation-box">
-                <!-- Personalized recommendation populated by JavaScript -->
+                <!-- Family-specific recommendation populated by JavaScript -->
               </div>
             </div>
 
@@ -363,8 +382,8 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <h3>Health Benefits Advisor</h3>
-          <p>Making health insurance decisions simpler with data-driven recommendations and interactive tools.</p>
+          <h3>Scott & Liz Family Benefits</h3>
+          <p>Comparing USG 2025 and Zaxbys 2026 benefits to help your family make the best enrollment decision.</p>
         </div>
 
         <div class="footer-section">
@@ -387,12 +406,12 @@
 
         <div class="footer-section">
           <h4>Disclaimer</h4>
-          <p class="disclaimer">This calculator provides estimates for educational purposes. Actual costs may vary based on specific plan details and provider charges. Consult your benefits administrator for official information.</p>
+          <p class="disclaimer">This is a private family calculator based on USG 2025 and Zaxbys 2026 documents. Estimates for Scott, Liz, Wills, and Jack only. Verify all costs with HR before enrollment.</p>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2025 Health Benefits Advisor. All rights reserved.</p>
+        <p>&copy; 2025 Scott & Liz Family Benefits Tool. Private use only.</p>
       </div>
     </div>
   </footer>

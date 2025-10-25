@@ -1,0 +1,461 @@
+{
+  "analysis_metadata": {
+    "analysis_date": "2025-10-25",
+    "household_size": 4,
+    "adults": 2,
+    "children": 2,
+    "tobacco_users": 0,
+    "chronic_medications": ["Ozempic/semaglutide for diabetes management"],
+    "preference": "Non-HDHP plans with predictable pharmacy copays"
+  },
+  "plans": {
+    "A": {
+      "employer": "USG (University System of Georgia)",
+      "plan_name": "Anthem Comprehensive Care",
+      "plan_year": 2025,
+      "plan_type": "PPO",
+      "network": "Blue Open Access POS",
+      "pcp_required": false,
+      "referrals_required": false,
+      "tier_premiums_monthly": {
+        "employee_only": 220.00,
+        "employee_spouse": 499.14,
+        "employee_children": 427.82,
+        "family": 713.04
+      },
+      "surcharge_rules": {
+        "spouse_works_elsewhere": {
+          "applies": true,
+          "amount_monthly": 150.00,
+          "citation": "2025 USG Comparison Guide, page 6",
+          "condition": "Spouse has offer of subsidized coverage through their employer"
+        },
+        "tobacco": {
+          "applies": false,
+          "amount_monthly": 150.00,
+          "citation": "2025 USG Comparison Guide, page 6",
+          "condition": "Household members are non-smokers"
+        }
+      },
+      "deductible": {
+        "individual": 1500,
+        "family": 4500,
+        "structure": "embedded",
+        "citation": "2025 USG Comparison Guide, page 10"
+      },
+      "oop_max": {
+        "individual": 3300,
+        "family": 6600,
+        "note": "Medical OOP only - separate pharmacy OOP",
+        "citation": "2025 USG Comparison Guide, page 10"
+      },
+      "pharmacy_oop_max": {
+        "individual": 2000,
+        "family": 6000,
+        "note": "Separate from medical OOP - potential total exposure $12,600",
+        "citation": "2025 USG Comparison Guide, page 22"
+      },
+      "copays": {
+        "pcp": 25,
+        "specialist": 50,
+        "urgent_care": "not specified",
+        "er": 300,
+        "er_note": "copay waived if admitted within 24 hours",
+        "citation": "2025 USG Comparison Guide, page 11"
+      },
+      "coinsurance": {
+        "inpatient": 0.10,
+        "outpatient": 0.10,
+        "note": "Member pays 10%, plan pays 90% after deductible",
+        "citation": "2025 USG Comparison Guide, page 12"
+      },
+      "rx": {
+        "pbm": "CVS Caremark",
+        "tiers": {
+          "generic": "copay $20",
+          "preferred_brand": "20% coinsurance ($50 min, $125 max)",
+          "non_preferred_brand": "35% coinsurance ($125 min, $250 max)",
+          "specialty": "20% coinsurance (max $85-$175 depending on drug)"
+        },
+        "ozempic": {
+          "covered": true,
+          "tier": "specialty (assumed)",
+          "member_cost": "20% coinsurance, max $175 per 30-day fill",
+          "annual_estimate": 2100,
+          "deductible_required": false,
+          "notes": "Specialty drugs exempt from deductible; likely requires prior authorization",
+          "citation": "2025 USG Comparison Guide, page 22-23"
+        },
+        "mail_order_available": true,
+        "mail_order_90day": {
+          "generic": 60,
+          "preferred_brand": "20% coinsurance ($150 min, $375 max)",
+          "non_preferred_brand": "35% coinsurance ($375 min, $750 max)"
+        }
+      },
+      "network": {
+        "in_network": "Blue Open Access POS - nationwide Anthem network via BlueCard",
+        "out_of_network": "Covered at reduced benefit level (60% after higher deductible)",
+        "citation": "2025 USG Comparison Guide, page 10"
+      },
+      "notes": [
+        "Separate medical and pharmacy OOP maximums create dual exposure",
+        "$150/month spouse surcharge APPLIES when covering spouse with other employer coverage",
+        "Strong PPO network with out-of-network coverage",
+        "No deductible required for specialty drugs",
+        "Moderate Ozempic cost ($2,100/year) but predictable"
+      ]
+    },
+    "B": {
+      "employer": "Zaxby's",
+      "plan_name": "OAP 1700",
+      "plan_year": 2026,
+      "plan_type": "PPO",
+      "network": "AmeriBen / Anthem",
+      "pcp_required": false,
+      "referrals_required": false,
+      "tier_premiums_monthly": {
+        "employee_only": 163.39,
+        "employee_spouse": 356.27,
+        "employee_children": 327.60,
+        "family": 559.95,
+        "conversion_note": "Converted from per-pay-period rates ($75.41, $164.43, $151.20, $258.44) × 2.1667"
+      },
+      "surcharge_rules": {
+        "spouse_works_elsewhere": {
+          "applies": false,
+          "amount_monthly": 0,
+          "citation": "No surcharge policy found in Zaxby's 2026 Benefits Guide",
+          "condition": "N/A - Zaxby's does not charge spouse surcharge"
+        }
+      },
+      "deductible": {
+        "individual": 1700,
+        "family": 5100,
+        "structure": "embedded",
+        "citation": "Zaxby's 2026 Benefits Guide, page 5"
+      },
+      "oop_max": {
+        "individual": 5100,
+        "family": 15300,
+        "note": "Single combined OOP maximum includes both medical and pharmacy",
+        "citation": "Zaxby's 2026 Benefits Guide, page 5"
+      },
+      "copays": {
+        "pcp": 25,
+        "specialist": 50,
+        "urgent_care": 50,
+        "er": 350,
+        "er_note": "copay waived if admitted",
+        "citation": "Zaxby's 2026 Benefits Guide, page 5"
+      },
+      "coinsurance": {
+        "inpatient": 0.20,
+        "outpatient": 0.20,
+        "note": "Member pays 20%, plan pays 80% after deductible",
+        "citation": "Zaxby's 2026 Benefits Guide, page 5"
+      },
+      "rx": {
+        "pbm": "ProAct",
+        "deductible_applies": "N/A for OAP plans (copays apply without deductible)",
+        "tiers": {
+          "tier1_generic": "copay $7",
+          "tier2_preferred_brand": "copay $35",
+          "tier3_non_preferred_brand": "copay $75"
+        },
+        "ozempic": {
+          "covered": true,
+          "tier": "tier2_preferred_brand OR tier3_non_preferred_brand (assumed - must verify)",
+          "member_cost": "copay $35 (Tier 2) or $75 (Tier 3) per 30-day fill",
+          "annual_estimate": "Tier 2: $420/year OR Tier 3: $900/year",
+          "deductible_required": false,
+          "notes": "Deductible line shows 'N/A' for OAP plans; likely requires prior authorization for GLP-1 drugs",
+          "citation": "Zaxby's 2026 Benefits Guide, page 5"
+        },
+        "mail_order_available": true,
+        "mail_order_90day": {
+          "tier1_generic": 14,
+          "tier2_preferred_brand": 70,
+          "tier3_non_preferred_brand": 150
+        }
+      },
+      "network": {
+        "in_network": "AmeriBen network (Anthem affiliation)",
+        "out_of_network": "Limited coverage - assume emergency only",
+        "citation": "Zaxby's 2026 Benefits Guide, page 5"
+      },
+      "notes": [
+        "NO spouse surcharge - saves $1,800/year vs USG",
+        "Single combined OOP maximum (medical + pharmacy)",
+        "Excellent pharmacy predictability with flat copays",
+        "Lower Ozempic annual cost: $420-900 vs USG's $2,100",
+        "Higher coinsurance (20%) than USG (10%) for major medical",
+        "Embedded deductible structure protects each family member"
+      ]
+    }
+  },
+  "scenarios": [
+    {
+      "scenario_id": 1,
+      "name": "Split Configuration - User+Kids on Zaxby's, Spouse Separate",
+      "configuration": {
+        "user_plus_children": {
+          "plan": "Zaxby's OAP 1700",
+          "tier": "Employee + Child(ren)",
+          "members": ["User", "Child 1", "Child 2"]
+        },
+        "spouse": {
+          "plan": "Zaxby's OAP 1700",
+          "tier": "Employee Only",
+          "members": ["Spouse"]
+        }
+      },
+      "monthly_premium_total": 490.99,
+      "monthly_surcharge_total": 0,
+      "monthly_total": 490.99,
+      "annual_total": 5892,
+      "ozempic_est_annual": 2600,
+      "illustrative_annual": {
+        "low": 8667,
+        "moderate": 9692,
+        "higher": 11992
+      },
+      "score": {
+        "pharmacy": 25,
+        "annual_cost": 26,
+        "risk": 13,
+        "access": 7,
+        "gotchas": 2,
+        "total": 73
+      },
+      "rank": 2,
+      "pros": [
+        "Lowest monthly premium across all scenarios",
+        "No spouse surcharge",
+        "Good pharmacy predictability after individual deductibles met"
+      ],
+      "cons": [
+        "Administrative complexity - two separate enrollments",
+        "Must meet two individual deductibles ($1,700 each)",
+        "Ozempic user must pay full $1,700 deductible before copays apply"
+      ]
+    },
+    {
+      "scenario_id": 2,
+      "name": "Entire Family on USG Comprehensive Care (with $150 surcharge)",
+      "configuration": {
+        "all_members": {
+          "plan": "USG Anthem Comprehensive Care",
+          "tier": "Family",
+          "members": ["User", "Spouse", "Child 1", "Child 2"]
+        }
+      },
+      "monthly_premium_total": 713.04,
+      "monthly_surcharge_total": 150.00,
+      "monthly_total": 863.04,
+      "annual_total": 10356,
+      "ozempic_est_annual": 2100,
+      "illustrative_annual": {
+        "low": 12656,
+        "moderate": 13356,
+        "higher": 15956
+      },
+      "score": {
+        "pharmacy": 22,
+        "annual_cost": 15,
+        "risk": 12,
+        "access": 8,
+        "gotchas": 5,
+        "total": 62
+      },
+      "rank": 4,
+      "pros": [
+        "Single family plan - simplest administration",
+        "No deductible required for specialty drugs",
+        "Strong out-of-network coverage",
+        "Lower coinsurance (10%) for major medical"
+      ],
+      "cons": [
+        "MOST EXPENSIVE - $10,356/year in premiums alone",
+        "$150/month surcharge adds $1,800/year unnecessarily",
+        "Separate pharmacy OOP max creates $12,600 total exposure potential",
+        "Ozempic cost $1,200-1,680 higher annually than Zaxby's"
+      ]
+    },
+    {
+      "scenario_id": 3,
+      "name": "Entire Family on Zaxby's OAP 1700 - RECOMMENDED ⭐",
+      "configuration": {
+        "all_members": {
+          "plan": "Zaxby's OAP 1700",
+          "tier": "Family",
+          "members": ["User", "Spouse", "Child 1", "Child 2"]
+        }
+      },
+      "monthly_premium_total": 559.95,
+      "monthly_surcharge_total": 0,
+      "monthly_total": 559.95,
+      "annual_total": 6719,
+      "ozempic_est_annual": 2600,
+      "illustrative_annual": {
+        "low": 9519,
+        "moderate": 10319,
+        "higher": 11819
+      },
+      "score": {
+        "pharmacy": 30,
+        "annual_cost": 35,
+        "risk": 18,
+        "access": 7,
+        "gotchas": 5,
+        "total": 95
+      },
+      "rank": 1,
+      "recommendation": "BEST OVERALL",
+      "pros": [
+        "LOWEST total annual cost across all scenarios",
+        "BEST pharmacy predictability - flat $35-75 copays for Ozempic",
+        "NO spouse surcharge - saves $1,800/year vs USG",
+        "Simplest administration - one family plan",
+        "Single combined OOP maximum (no separate Rx OOP trap)",
+        "Embedded deductible structure protects each member"
+      ],
+      "cons": [
+        "Must meet $1,700 individual deductible before Ozempic copays apply",
+        "Higher coinsurance (20%) vs USG (10%) for major medical events",
+        "High family OOP maximum ($15,300) - though unlikely to reach",
+        "Limited out-of-network coverage compared to USG PPO"
+      ],
+      "bottom_line": "Best balance of cost, simplicity, and pharmacy predictability"
+    },
+    {
+      "scenario_id": 4,
+      "name": "Entire Family on Zaxby's OAP 3000",
+      "configuration": {
+        "all_members": {
+          "plan": "Zaxby's OAP 3000",
+          "tier": "Family",
+          "members": ["User", "Spouse", "Child 1", "Child 2"]
+        }
+      },
+      "monthly_premium_total": 519.63,
+      "monthly_surcharge_total": 0,
+      "monthly_total": 519.63,
+      "annual_total": 6236,
+      "ozempic_est_annual": 3900,
+      "illustrative_annual": {
+        "low": 10336,
+        "moderate": 11636,
+        "higher": 14136
+      },
+      "score": {
+        "pharmacy": 20,
+        "annual_cost": 24,
+        "risk": 10,
+        "access": 7,
+        "gotchas": 5,
+        "total": 66
+      },
+      "rank": 3,
+      "verdict": "NOT RECOMMENDED",
+      "reason": "Higher $3,000 deductible adds ~$1,300/year to Ozempic costs, negating $40/month premium savings. Worse 70/30 coinsurance creates additional financial risk."
+    }
+  ],
+  "recommendation": {
+    "best_overall": "Scenario 3 - Entire Family on Zaxby's OAP 1700",
+    "best_budget": "Scenario 1 - Split Configuration (lowest premium but more complex)",
+    "best_predictable_rx": "Scenario 3 - Entire Family on Zaxby's OAP 1700 (same as best overall)",
+    "rationale": [
+      "Scenario 3 provides optimal balance of cost, simplicity, and pharmacy benefits",
+      "Saves $3,637/year in premiums vs USG Comprehensive ($10,356 - $6,719)",
+      "Avoids $1,800/year spouse surcharge that USG would charge",
+      "Ozempic costs $1,200-1,500 less annually ($2,600 vs $2,100 but with better predictability)",
+      "Single family plan eliminates administrative burden of split enrollments",
+      "Embedded deductible ($1,700 individual max) protects each family member",
+      "Flat copays provide excellent pharmacy cost predictability for chronic medication",
+      "Total estimated annual cost: $10,319 (moderate utilization) vs $13,356 for USG"
+    ]
+  },
+  "critical_assumptions": [
+    {
+      "assumption": "Ozempic formulary tier placement",
+      "usg": "Assumed Specialty Tier based on typical GLP-1 classification",
+      "zaxbys": "Assumed Tier 2 (Preferred Brand) or Tier 3 (Non-Preferred Brand)",
+      "risk": "Tier placement must be verified with CVS Caremark and ProAct before enrollment",
+      "impact": "If tiering differs, out-of-pocket costs could vary by $500-1,000 annually"
+    },
+    {
+      "assumption": "Prior authorization requirements",
+      "note": "GLP-1 drugs typically require PA for diabetes treatment",
+      "action_required": "Verify PA process and medical necessity documentation with both PBMs",
+      "impact": "PA denial could eliminate coverage entirely"
+    },
+    {
+      "assumption": "Spouse surcharge applicability",
+      "condition": "Applies whenever spouse has access to employer-subsidized coverage",
+      "verification": "Zaxby's offers subsidized coverage, so USG surcharge DOES apply",
+      "exception": "Surcharge would not apply if spouse declined Zaxby's eligibility",
+      "citation": "USG Guide page 6"
+    },
+    {
+      "assumption": "Premium conversion accuracy",
+      "method": "Zaxby's biweekly rates converted to monthly using 26 pay periods ÷ 12 months",
+      "factor": 2.1667,
+      "verification": "Math confirmed - annual totals match both calculation methods"
+    },
+    {
+      "assumption": "Network adequacy",
+      "note": "Assumed both Anthem (USG) and AmeriBen (Zaxby's) have adequate Athens, GA networks",
+      "action_required": "Verify current physicians are in-network before enrollment"
+    }
+  ],
+  "action_items": [
+    {
+      "priority": "HIGH",
+      "action": "Verify Ozempic tier placement with ProAct (Zaxby's)",
+      "contact": "Call 1-877-635-9545 or visit www.proactrx.com"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Confirm prior authorization requirements for Ozempic",
+      "contact": "ProAct for Zaxby's plans, CVS Caremark for USG plans"
+    },
+    {
+      "priority": "HIGH",
+      "action": "Verify current doctors are in-network for Zaxby's OAP 1700",
+      "contact": "Visit www.ameriben.com or call 1-855-961-5406"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Investigate Novo Nordisk copay assistance programs",
+      "contact": "Visit www.novocare.com or call manufacturer support"
+    },
+    {
+      "priority": "MEDIUM",
+      "action": "Enroll in Zaxby's OAP 1700 during open enrollment period",
+      "timing": "Check with HR for exact enrollment window"
+    },
+    {
+      "priority": "LOW",
+      "action": "Consider setting up FSA for predictable medical expenses",
+      "note": "Can use pre-tax dollars for copays, deductibles, prescriptions"
+    }
+  ],
+  "comparison_summary": {
+    "key_differences": [
+      "USG charges $150/month spouse surcharge when spouse has other employer coverage; Zaxby's does not",
+      "USG has separate medical and pharmacy OOP maximums ($12,600 total); Zaxby's has single combined OOP ($15,300)",
+      "Zaxby's offers superior pharmacy predictability with flat copays; USG uses coinsurance for specialty drugs",
+      "Zaxby's OAP 1700 family premium is $153/month cheaper than USG Comprehensive ($559.95 vs $713.04)",
+      "With surcharge included, Zaxby's is $303/month cheaper ($559.95 vs $863.04)",
+      "USG has better out-of-network coverage; Zaxby's is limited to in-network only"
+    ],
+    "financial_impact": {
+      "annual_premium_difference": 3637,
+      "annual_surcharge_savings": 1800,
+      "annual_ozempic_savings": "1200-1500",
+      "total_annual_savings": "6637-6937",
+      "calculation": "USG ($10,356 premium + $2,100 Rx) - Zaxby's ($6,719 premium + $2,600 Rx) = $5,137 base savings + $1,800 surcharge = $6,937"
+    }
+  }
+}

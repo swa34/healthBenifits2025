@@ -1,0 +1,546 @@
+﻿executive-summary Executive Summary
+
+
+Based on your updated household (2 adults, 2 children) and priorities, the best option is overwhelmingly Scenario 2: Enroll the entire family in the Zaxby's OAP 3000 plan.
+This strategy is the clear winner for your family:
+* Best for Ozempic: It provides the predictable, low-cost pharmacy coverage you need. The copay for Ozempic is estimated at $35 per month 1, compared to the $50-$125 monthly maximum on the USG plan2.
+
+* Lowest Total Cost: This scenario has the lowest monthly premium by a slim margin, saving you approximately **$11.50/month** ($138/year) over the next-best "Split Coverage" option (Scenario 4).
+* No Surcharge: By enrolling the family in the Zaxby's plan, you completely avoid the $150/month USG spouse surcharge3.
+
+* Simplicity: It places the entire family on a single plan, simplifying administration, deductibles, and out-of-pocket maximums.
+The primary trade-off is a higher family out-of-pocket maximum ($14,000)44. However, for your stated needs (predictable Rx costs and low-to-moderate use), the immediate and substantial monthly savings and superior pharmacy benefits make this the most logical choice.
+
+
+________________
+
+
+📊 Plan Comparison: USG vs. Zaxby's (Family Tiers)
+
+
+This table compares the two relevant non-HDHP plans: Plan A (USG Anthem Comprehensive Care) and Plan B (Zaxby's OAP 3000), using their family coverage tiers.
+Feature
+	Plan A: USG Anthem Comprehensive Care (2025)
+	Plan B: Zaxby's OAP 3000 (2026)
+	Plan Type
+	POS (Blue Open Access POS) 5
+
+
+	OAP (Open Access Plan) 66
+
+
+	Spouse Surcharge
+	
+
+	Yes: $150/month if covering a spouse who has access to other employer-subsidized coverage7.
+
+
+	
+
+	No: A spousal surcharge is not mentioned in the guide 8.
+
+
+	Premiums (Monthly)
+	
+
+	Assumes 26 (bi-weekly) pay periods.
+	• Employee Only
+	$220.00 99
+
+
+	$137.89 ($63.64/pay) 10
+
+
+	• Employee + Child(ren)
+	$427.82 1111
+
+
+	$311.16 ($143.61/pay) 12
+
+
+	• Family
+	$713.04 1313
+
+
+	$519.63 ($239.83/pay) 14
+
+
+	Deductible (In-Network)
+	$1,500 (Ind) / $4,500 (Family) 15
+
+
+	$3,000 (Ind) / **$6,000 (Family)** 1616
+
+
+	• Deductible Type
+	Embedded 17
+
+
+	Embedded 18
+
+
+	Out-of-Pocket Max (In-Network)
+	$5,000 (Ind) / **$10,000 (Family)** 19
+
+
+	$7,000 (Ind) / **$14,000 (Family)** 2020
+
+
+	Separate Rx OOP Max?
+	
+
+	Yes (Good): $2,000 (Ind) / **$6,000 (Family)** 21
+
+
+	
+
+	No (Bad): Pharmacy costs apply to the main medical OOP max222222.
+
+
+	Copays (In-Network)
+	
+
+	
+
+	• PCP Visit
+	$25 (Deductible waived) 23
+
+
+	$25 (Deductible waived) 2424
+
+
+	• Specialist Visit
+	$50 (Deductible waived) 25
+
+
+	$50 (Deductible waived) 2626
+
+
+	• Urgent Care
+	$50 (Deductible waived) 27
+
+
+	$50 (Deductible waived) 2828
+
+
+	• Emergency Room
+	$300 (Deductible waived) 29
+
+
+	$350 (Deductible waived) 3030
+
+
+	• Lab Services
+	10% Coinsurance (Subject to deductible) 31
+
+
+	20% Coinsurance (Subject to deductible) 3232
+
+
+	Pharmacy (30-day)
+	Copays/coinsurance apply immediately.
+	Copays apply immediately (Rx deductible is N/A)33.
+
+
+	• Generic
+	$20 copay 34
+
+
+	$7 copay 35
+
+
+	• Preferred Brand
+	20% coinsurance ($50 min, $125 max) 36
+
+
+	
+
+	$35 copay 37
+
+
+	• Non-Preferred Brand
+	35% coinsurance ($125 min, $250 max) 38
+
+
+	$75 copay 39
+
+
+	Ozempic (Est. Tier)
+	Tier 2 (Preferred Brand)
+	Tier 2 (Preferred Brand)
+	Est. Ozempic Cost (30-day)
+	
+
+	$50.00 - $125.00 40
+
+
+	
+
+	$35.00 41
+
+
+	Network & Access
+	Blue Open Access POS. No PCP referral needed42.
+
+
+	AmeriBen (Anthem Network)43.
+
+
+	Telehealth
+	First 3 visits $0, then $15 copay44.
+
+
+	**$0 copay** 45
+
+
+	________________
+
+
+💰 Scenario Cost Comparison (4-Person Household)
+
+
+This table models the total annual cost for a 2-adult, 2-child household.
+Scenario
+	Monthly Premium
+	Monthly Surcharge
+	Total Monthly Cost
+	Est. Annual Premium
+	Est. Annual Ozempic Cost
+	Illustrative Annual Total (Moderate Use)
+	1. All on Plan A (USG)
+	$713.04 4646
+
+
+	**$150.00** 47
+
+
+	$863.04
+	$10,356.48
+	$1,500.00 (On Plan A: $125/mo max)
+	**$12,186.48** ($10,356 + $1500 Rx + $330 visits/labs)
+	2. All on Plan B (Zaxby's)
+	$519.63 48
+
+
+	$0.00
+	**$519.63**
+	$6,235.56
+	$420.00 (On Plan B: $35/mo)
+	**$7,255.56** ($6,236 + $420 Rx + $600 visits/labs)
+	3. Split (Kids on Plan A)
+	$565.71
+($427.82 [A] + $137.89 [B]) 494949
+	$0.00
+	**$565.71**
+	$6,788.52
+	$1,500.00 (On Plan A: $125/mo max)
+	**$8,618.52** ($6,789 + $1500 Rx + $330 visits/labs)
+	4. Split (Kids on Plan B)
+	$531.16
+($220.00 [A] + $311.16 [B]) 505050
+	$0.00
+	**$531.16**
+	$6,373.92
+	$420.00 (On Plan B: $35/mo)
+	**$7,393.92** *($6,374 + $420 Rx + $600 visits/labs)*
+	Illustrative Use Assumptions:
+   * Ozempic: Assumed to be Tier 2 (Preferred Brand) for one adult.
+   * Moderate Use (Plan A): $10,356 (Annual Premium) + $1,500 (Ozempic) + $100 (4x $25 PCP) + $50 (1x $50 Specialist) + $100 (2x $50 UC) + $80 (10% of $800 labs, assuming deductible met).
+   * Moderate Use (Plan B): $6,236 (Annual Premium) + $420 (Ozempic) + $100 (4x $25 PCP) + $50 (1x $50 Specialist) + $100 (2x $50 UC) + $300 (100% of $300 labs, as it's pre-deductible).
+   * Note: The lab cost difference is due to Plan A's 10% coinsurance after deductible vs. Plan B's 20% coinsurance after deductible. In a moderate use case on Plan B, the $6,000 family deductible is not met, so you pay 100% of labs. On Plan A, it's ambiguous, but I've assumed the deductible is met for labs. If not, the lab cost would be higher, making Plan A even more expensive.
+________________
+
+
+🏆 Scoring & Recommendation (4-Person Household)
+
+
+This framework scores each scenario based on your stated priorities.
+Weighting & Category
+	Scenario 1: All on Plan A (USG)
+	Scenario 2: All on Plan B (Zaxby's)
+	Scenario 3: Split (Kids on A)
+	Scenario 4: Split (Kids on B)
+	30% - Pharmacy (Ozempic)
+	10 / 30 (Capped, but high/variable)
+	30 / 30 (Excellent: $35 fixed copay)
+	10 / 30 (Capped, but high/variable)
+	30 / 30 (Excellent: $35 fixed copay)
+	35% - Total Annual Cost
+	5 / 35 (Poor - surcharge)
+	35 / 35 (Excellent - lowest cost)
+	20 / 35 (Fair)
+	33 / 35 (Excellent - very close)
+	20% - Financial Risk (Ded/OOP)
+	18 / 20 (Best: $10k OOPM)
+	12 / 20 (Highest risk: $14k OOPM)
+	15 / 20 (Good)
+	15 / 20 (Good)
+	10% - Access (Network/Telehealth)
+	8 / 10 (Good)
+	10 / 10 (Excellent - $0 Telehealth)
+	8 / 10 (Good)
+	10 / 10 (Excellent - $0 Telehealth)
+	5% - "Gotchas"
+	1 / 5 (Surcharge + lab ambiguity)
+	4 / 5 (Clear rules, no surcharge)
+	2 / 5 (Split admin, lab ambiguity)
+	3 / 5 (Split admin)
+	Total Score
+	42 / 100
+	91 / 100
+	55 / 100
+	91 / 100
+	Recommendations:
+This is a very close race between Scenario 2 and Scenario 4, both of which are excellent choices that meet your needs.
+   * 🥇 Best Overall: Scenario 2 (All on Zaxby's OAP 3000). It is the simplest and cheapest option. It puts everyone on one plan with one deductible and provides the $35 Ozempic copay and $0 telehealth visits.
+   * 🥈 Excellent Alternative: Scenario 4 (Split, Kids on Zaxby's). This is also a fantastic choice. It costs only ~$11.50/mo more but gives you two separate out-of-pocket maximums ($5k for the USG employee, $14k for the Zaxby's family). This slightly reduces your total high-end financial risk compared to putting all four people on the single $14k Zaxby's plan.
+   * 💸 Best Budget: Scenario 2 (All on Zaxby's OAP 3000).
+   * 💊 Best for Predictable Rx: Scenario 2 or Scenario 4 (Tie).
+Final Verdict: Go with Scenario 2 (All on Zaxby's OAP 3000). The minor cost savings and significant administrative simplicity of having one family plan outweigh the slightly lower (but more complex) out-of-pocket risk of Scenario 4.
+________________
+
+
+⚠️ Assumptions & Edge Cases
+
+
+Please be aware of the following assumptions made during this analysis:
+   1. Year Mismatch: The USG plan is for 2025 51, and the Zaxby's plan is for 202652. This analysis assumes the Zaxby's 2026 rates and benefits are what you would be enrolling in.
+
+   2. Pay Periods: The Zaxby's guide provides rates "Per Pay Period"53. I have assumed a bi-weekly (26 pay periods) schedule to calculate monthly premiums. If the pay schedule is different (e.g., weekly or semi-monthly), the monthly premium for Plan B will change.
+
+   3. Ozempic Tier: I have assumed Ozempic (semaglutide) is a Tier 2 (Preferred Brand) on both plans. If it is classified as Tier 3 (Non-Preferred), the annual cost on Plan B would increase from $420 to $900 (from $75/mo copays 54). This is still more predictable and cheaper than Plan A's $1,500 annual estimate.
+
+________________
+
+
+```json
+
+
+{
+"plans": {
+"A": {
+"plan_name": "USG Anthem Comprehensive Care",
+"document": "2025_USG_Comparison_Guide_508_Compliant_FINAL.pdf",
+"tier_premiums_monthly": {
+"employee_only": 220.00,
+"employee_child": 427.82,
+"employee_spouse": 499.14,
+"family": 713.04,
+"citation": "cite: 172"
+},
+"surcharge_rules": {
+"spouse_works_elsewhere": {
+"applies": true,
+"amount_monthly": 150.00,
+"citation": "cite: 114"
+}
+},
+"deductible_in_network": {
+"individual": 1500,
+"family": 4500,
+"note": "Family tier is Emp + 2 or more 55",
+"citation": "cite: 184"
+},
+"oop_max_in_network": {
+"individual": 5000,
+"family": 10000,
+"note": "Family tier is Emp + 2 or more56. Separate Rx OOP max ($6k Family)57.",
+"citation": "cite: 184"
+},
+"copays": {
+"pcp": 25,
+"specialist": 50,
+"urgent_care": 50,
+"er": 300,
+"citation": "cite: 196, 213"
+},
+"rx": {
+"tiers": {
+"generic": "$20 copay",
+"preferred_brand": "20% coinsurance ($50 min, $125 max)",
+"non_preferred_brand": "35% coinsurance ($125 min, $250 max)",
+"specialty": "20% coinsurance (max $175)"
+},
+"citation": "cite: 452",
+"ozempic": {
+"covered": true,
+"tier": "Preferred Brand (Assumed)",
+"member_cost": "$50.00 - $125.00 per 30-day supply",
+"notes": "Cost is a 20% coinsurance with a floor and a cap58."
+}
+},
+"network": {
+"in_network": "Blue Open Access POS, no PCP referral required59.",
+"out_of_network": "Covered at a higher cost-share60."
+},
+"notes": [
+"Plan year 202561.",
+"Has a separate, favorable Rx Out-of-Pocket Max ($2k Ind / $6k Fam)62.",
+"Labs are 10% coinsurance subject to deductible63."
+]
+},
+"B": {
+"plan_name": "Zaxby's OAP 3000",
+"document": "Zaxbys2026BenefitsGuide.pdf",
+"tier_premiums_monthly": {
+"employee_only": 137.89,
+"employee_child": 311.16,
+"employee_spouse": 328.27,
+"family": 519.63,
+"citation": "cite: 1664",
+"note": "Assumes 26 pay periods (bi-weekly)."
+},
+"surcharge_rules": {
+"spouse_works_elsewhere": {
+"applies": false,
+"amount_monthly": 0,
+"citation": "Not mentioned in document 64."
+}
+},
+"deductible_in_network": {
+"individual": 3000,
+"family": 6000,
+"note": "Embedded deductible65.",
+"citation": "cite: 1661"
+},
+"oop_max_in_network": {
+"individual": 7000,
+"family": 14000,
+"note": "Includes deductible and copays6666.",
+"citation": "cite: 1661"
+},
+"copays": {
+"pcp": 25,
+"specialist": 50,
+"urgent_care": 50,
+"er": 350,
+"citation": "cite: 1661"
+},
+"rx": {
+"tiers": {
+"generic": "$7 copay",
+"preferred_brand": "$35 copay",
+"non_preferred_brand": "$75 copay",
+"specialty": "N/A - Tiers 1-3 listed."
+},
+"citation": "cite: 1664",
+"ozempic": {
+"covered": true,
+"tier": "Tier 2 (Preferred Brand) (Assumed)",
+"member_cost": "$35.00 per 30-day supply",
+"notes": "Rx deductible is N/A, copays apply immediately67."
+}
+},
+"network": {
+"in_network": "AmeriBen, using Anthem network68.",
+"out_of_network": "Not explicitly detailed in summary table, OAP plans typically have OON coverage."
+},
+"notes": [
+"Plan year 202669.",
+"Telemedicine (LiveHealth Online) is $0 copay70.",
+"Pharmacy costs apply to the main medical OOP max717171."
+]
+}
+},
+"scenarios": [
+{
+"name": "Scenario 1: All on Plan A (USG)",
+"monthly_premium_total": 713.04,
+"monthly_surcharge_total": 150.00,
+"monthly_total": 863.04,
+"annual_total_premium": 10356.48,
+"ozempic_est_annual": 1500,
+"ozempic_notes": "Assumes user (on Plan A) takes Ozempic at $125/mo max72.",
+"illustrative_annual": {
+"low": 11986.48,
+"moderate": 12186.48,
+"higher": 12486.48
+},
+"score": {
+"pharmacy": 10,
+"annual_cost": 5,
+"risk": 18,
+"access": 8,
+"gotchas": 1,
+"total": 42
+}
+},
+{
+"name": "Scenario 2: All on Plan B (Zaxby's)",
+"monthly_premium_total": 519.63,
+"monthly_surcharge_total": 0,
+"monthly_total": 519.63,
+"annual_total_premium": 6235.56,
+"ozempic_est_annual": 420,
+"ozempic_notes": "Assumes user (on Plan B) takes Ozempic at $35/mo copay73.",
+"illustrative_annual": {
+"low": 7005.56,
+"moderate": 7255.56,
+"higher": 7605.56
+},
+"score": {
+"pharmacy": 30,
+"annual_cost": 35,
+"risk": 12,
+"access": 10,
+"gotchas": 4,
+"total": 91
+}
+},
+{
+"name": "Scenario 3: Split Coverage (Kids on Plan A)",
+"monthly_premium_total": 565.71,
+"monthly_surcharge_total": 0,
+"monthly_total": 565.71,
+"annual_total_premium": 6788.52,
+"ozempic_est_annual": 1500,
+"ozempic_notes": "Assumes user (on Plan A) takes Ozempic at $125/mo max74.",
+"illustrative_annual": {
+"low": 8418.52,
+"moderate": 8618.52,
+"higher": 8918.52
+},
+"score": {
+"pharmacy": 10,
+"annual_cost": 20,
+"risk": 15,
+"access": 8,
+"gotchas": 2,
+"total": 55
+}
+},
+{
+"name": "Scenario 4: Split Coverage (Kids on Plan B)",
+"monthly_premium_total": 531.16,
+"monthly_surcharge_total": 0,
+"monthly_total": 531.16,
+"annual_total_premium": 6373.92,
+"ozempic_est_annual": 420,
+"ozempic_notes": "Assumes user (on Plan B) takes Ozempic at $35/mo copay75.",
+"illustrative_annual": {
+"low": 7143.92,
+"moderate": 7393.92,
+"higher": 7743.92
+},
+"score": {
+"pharmacy": 30,
+"annual_cost": 33,
+"risk": 15,
+"access": 10,
+"gotchas": 3,
+"total": 91
+}
+}
+],
+"recommendation": {
+"best_overall": "Scenario 2: All on Plan B (Zaxby's)",
+"best_budget": "Scenario 2: All on Plan B (Zaxby's)",
+"best_predictable_rx": "Scenario 2 (All on Zaxby's) or Scenario 4 (Split, Kids on Zaxby's)",
+"rationale": [
+"This scenario is the simplest and cheapest, saving ~$11.50/mo over the next best option.",
+"It provides the desired $35 fixed copay for Ozempic, meeting your primary constraint.",
+"It completely avoids the $150/month USG spouse surcharge.",
+"Scenario 4 is an equally excellent choice if you prefer to split the family's out-of-pocket risk across two separate plans."
+]
+}
+}

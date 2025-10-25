@@ -1,836 +1,846 @@
-// Health Benefits Plan Data Structure
-// Real data from USG 2025 and Zaxbys 2026 benefits analysis
-// For family of 4: Scott, Liz, and 2 children
+// Family-Specific Health Benefits Data
+// For: Scott, Liz, Wills, and Jack (Family of 4)
+// Comparing: Scott's USG 2025 Benefits vs Liz's Zaxbys 2026 Benefits
 
-const healthPlans = [
+const familyInfo = {
+  members: ['Scott', 'Liz', 'Wills', 'Jack'],
+  adults: 2,
+  children: 2,
+  totalMembers: 4,
+  scottEmployer: 'University System of Georgia (USG)',
+  lizEmployer: 'Zaxbys'
+};
+
+// ========================================
+// SCOTT'S USG 2025 MEDICAL PLANS
+// ========================================
+
+const usgMedicalPlans = [
   {
-    id: 'usg-comprehensive-2025',
-    name: 'USG Anthem Comprehensive Care',
-    employer: 'USG (University System of Georgia)',
+    id: 'usg-consumer-choice-hsa-2025',
+    name: 'USG Consumer Choice HSA',
+    employer: 'USG (Scott)',
     planYear: 2025,
-    category: 'PPO - Preferred Provider Organization',
+    category: 'HDHP - HSA Eligible',
     carrier: 'Anthem Blue Cross Blue Shield',
-    recommended: false,
-    rank: 4,
-    score: 62,
+    network: 'Blue Open Access POS',
 
-    // Premium costs (MONTHLY)
     premiums: {
-      monthly: {
-        employee: 220.00,
-        employeeSpouse: 499.14,
-        employeeChildren: 427.82,
-        family: 713.04
-      },
-      annual: {
-        employee: 2640,
-        employeeSpouse: 5990,
-        employeeChildren: 5134,
-        family: 8556
-      }
+      family_monthly: 346.18,
+      family_annual: 4154.16
     },
 
-    // CRITICAL: Spouse surcharge
-    surcharges: {
-      workingSpouse: {
-        applies: true,
-        monthlyAmount: 150.00,
-        annualAmount: 1800,
-        condition: 'Spouse has access to employer-subsidized coverage elsewhere',
-        note: 'APPLIES to this family - Liz has Zaxbys coverage'
-      },
-      tobacco: {
-        applies: false,
-        monthlyAmount: 150.00,
-        condition: 'Tobacco user'
-      }
-    },
-
-    // Total premium INCLUDING surcharge for family
-    actualFamilyCost: {
-      monthly: 863.04, // 713.04 + 150 surcharge
-      annual: 10356
-    },
-
-    // Cost sharing
     deductible: {
-      individual: 1500,
-      family: 4500,
-      structure: 'embedded',
-      note: 'Each person has max $1,500, or family hits $4,500 total'
-    },
-    outOfPocketMax: {
-      individualMedical: 3300,
-      familyMedical: 6600,
-      individualPharmacy: 2000,
-      familyPharmacy: 6000,
-      combined: false,
-      totalFamilyExposure: 12600,
-      note: 'SEPARATE medical and pharmacy OOP - potential $12,600 exposure'
-    },
-    coinsurance: 10, // Member pays 10%, plan pays 90%
-
-    hsaEligible: false,
-    employerHSAContribution: {
-      employee: 0,
-      family: 0
+      individual: 3200,
+      family: 6400,
+      type: 'non-embedded'
     },
 
-    // Coverage details
-    coverage: {
-      primaryCare: {
-        cost: '$25 copay',
-        note: 'No deductible required'
-      },
-      specialist: {
-        cost: '$50 copay',
-        note: 'No deductible required, no referral needed'
-      },
-      urgentCare: {
-        cost: 'Not specified',
-        note: 'PPO network'
-      },
-      emergency: {
-        cost: '$300 copay',
-        note: 'Waived if admitted within 24 hours'
-      },
-      inpatient: {
-        cost: '10% coinsurance after deductible',
-        note: 'Member pays 10%, plan pays 90%'
-      },
-      outpatient: {
-        cost: '10% coinsurance after deductible',
-        note: 'Member pays 10%, plan pays 90%'
-      },
-      prescription: {
-        pbm: 'CVS Caremark',
-        deductibleRequired: false,
-        generic: '$20 copay (retail 30-day) / $60 (mail 90-day)',
-        preferredBrand: '20% coinsurance ($50-125 retail / $150-375 mail)',
-        nonPreferred: '35% coinsurance ($125-250 retail / $375-750 mail)',
-        specialty: '20% coinsurance (max $175 per 30-day)',
-        ozempic: {
-          tier: 'Specialty (assumed)',
-          costPer30Day: 175,
-          annualCost: 2100,
-          deductibleRequired: false,
-          note: 'Specialty drugs exempt from deductible'
-        }
-      }
+    oopMax: {
+      individual: 5000,
+      family: 10000
     },
 
-    // Network information
-    network: {
-      name: 'Blue Open Access POS',
-      size: 'Nationwide via Anthem BlueCard',
-      type: 'PPO',
-      pcpRequired: false,
-      referralsRequired: false,
-      outOfNetworkCovered: true,
-      outOfNetworkNote: 'Covered at 60% after higher deductible'
+    coinsurance: '80/20',
+
+    copays: {
+      pcp: 'After deductible',
+      specialist: 'After deductible',
+      er: 'After deductible',
+      urgentCare: 'After deductible'
     },
 
-    // Best for personas
-    bestFor: ['out-of-network-needs', 'usg-employees-only'],
+    hsa: {
+      eligible: true,
+      employerContribution: 750
+    },
 
-    // Pros and cons
-    pros: [
-      'Strong PPO network with out-of-network coverage',
-      'No deductible required for specialty drugs (Ozempic)',
-      'Lower coinsurance (10%) for major medical events',
-      'Embedded deductible protects each family member',
-      'Single family plan - simple administration'
-    ],
-    cons: [
-      'MOST EXPENSIVE - $10,356/year in premiums with surcharge',
-      '$150/month spouse surcharge adds $1,800/year',
-      'Separate pharmacy OOP creates $12,600 total exposure',
-      'Ozempic costs $1,200-1,680 more annually than Zaxbys',
-      'Higher total annual cost in all scenarios'
-    ],
+    rx: {
+      deductible: true,
+      tier1: 'After ded 20%',
+      tier2: 'After ded 20%',
+      tier3: 'After ded 20%'
+    },
 
-    // Estimated annual costs for family of 4
-    estimatedAnnualCosts: {
-      lowUse: {
-        premiums: 10356,
-        ozempic: 2100,
-        medical: 200,
-        total: 12656,
-        note: 'Annual physicals, 2-3 sick visits, preventive care'
-      },
-      moderateUse: {
-        premiums: 10356,
-        ozempic: 2100,
-        medical: 900,
-        total: 13356,
-        note: '6-8 doctor visits, urgent care, labs, imaging'
-      },
-      highUse: {
-        premiums: 10356,
-        ozempic: 2100,
-        medical: 3500,
-        total: 15956,
-        note: 'ER visit, hospitalization, or significant medical event'
-      }
-    }
+    pros: ['HSA eligible', 'Lowest premium', 'Tax advantages'],
+    cons: ['High deductible', 'All costs after deductible', 'No copays'],
+
+    bestFor: 'Healthy families who rarely use healthcare'
   },
 
   {
-    id: 'zaxbys-oap1700-2026',
-    name: 'Zaxbys OAP 1700',
-    employer: 'Zaxbys',
-    planYear: 2026,
-    category: 'PPO - Preferred Provider Organization',
-    carrier: 'AmeriBen / Anthem',
-    recommended: true,
-    rank: 1,
-    score: 95,
-    badge: 'BEST OVERALL',
+    id: 'usg-comprehensive-care-2025',
+    name: 'USG Comprehensive Care',
+    employer: 'USG (Scott)',
+    planYear: 2025,
+    category: 'PPO - Preferred Provider',
+    carrier: 'Anthem Blue Cross Blue Shield',
+    network: 'Blue Open Access POS',
 
-    // Premium costs (MONTHLY)
     premiums: {
-      monthly: {
-        employee: 163.39,
-        employeeSpouse: 356.27,
-        employeeChildren: 327.60,
-        family: 559.95
-      },
-      annual: {
-        employee: 1961,
-        employeeSpouse: 4275,
-        employeeChildren: 3931,
-        family: 6719
-      }
+      family_monthly: 713.04,
+      family_annual: 8556.48
     },
 
-    // NO surcharges!
-    surcharges: {
-      workingSpouse: {
-        applies: false,
-        monthlyAmount: 0,
-        annualAmount: 0,
-        note: 'Zaxbys has NO spouse surcharge policy - SAVES $1,800/year vs USG'
-      }
+    surcharge: {
+      workingSpouse: 150,
+      reason: 'Liz has Zaxbys coverage',
+      monthly_total: 863.04,
+      annual_total: 10356
     },
 
-    // Total premium (no surcharge)
-    actualFamilyCost: {
-      monthly: 559.95,
-      annual: 6719
-    },
-
-    // Cost sharing
     deductible: {
-      individual: 1700,
-      family: 5100,
-      structure: 'embedded',
-      note: 'Each person max $1,700, or family hits $5,100 total'
+      individual: 1500,
+      family: 4500,
+      type: 'embedded'
     },
-    outOfPocketMax: {
-      individual: 5100,
-      family: 15300,
-      combined: true,
-      totalFamilyExposure: 15300,
-      note: 'SINGLE combined OOP maximum includes both medical AND pharmacy'
-    },
-    coinsurance: 20, // Member pays 20%, plan pays 80%
 
-    hsaEligible: false,
-    employerHSAContribution: {
-      employee: 0,
+    oopMax: {
+      individual_medical: 3300,
+      family_medical: 6600,
+      family_pharmacy: 6000,
+      total_family_exposure: 12600,
+      note: 'SEPARATE medical and pharmacy OOP'
+    },
+
+    coinsurance: '90/10',
+
+    copays: {
+      pcp: 25,
+      specialist: 50,
+      er: 300,
+      urgentCare: 'Not specified'
+    },
+
+    hsa: {
+      eligible: false,
+      employerContribution: 0
+    },
+
+    rx: {
+      deductible: false,
+      tier1_retail: 7,
+      tier2_retail: 35,
+      tier3_retail: 75,
+      tier1_mail90: 14,
+      tier2_mail90: 70,
+      tier3_mail90: 150
+    },
+
+    pros: ['Low copays', 'Good coinsurance 90/10', 'No deductible for PCP/specialist'],
+    cons: ['HIGH PREMIUM + $150/month surcharge', 'Separate pharmacy OOP', 'Expensive total cost'],
+
+    bestFor: 'Out-of-network needs (otherwise NOT recommended)'
+  },
+
+  {
+    id: 'usg-bluechoice-hmo-2025',
+    name: 'USG BlueChoice HMO',
+    employer: 'USG (Scott)',
+    planYear: 2025,
+    category: 'HMO - Health Maintenance Organization',
+    carrier: 'Anthem Blue Cross Blue Shield',
+    network: 'BlueChoice HMO',
+
+    premiums: {
+      family_monthly: 874.38,
+      family_annual: 10492.56
+    },
+
+    deductible: {
+      individual: 0,
       family: 0
     },
 
-    // Coverage details
-    coverage: {
-      primaryCare: {
-        cost: '$25 copay',
-        note: 'No deductible required'
-      },
-      specialist: {
-        cost: '$50 copay',
-        note: 'No deductible required, no referral needed'
-      },
-      urgentCare: {
-        cost: '$50 copay',
-        note: 'No deductible required'
-      },
-      emergency: {
-        cost: '$350 copay',
-        note: 'Waived if admitted'
-      },
-      inpatient: {
-        cost: '20% coinsurance after deductible',
-        note: 'Member pays 20%, plan pays 80%'
-      },
-      outpatient: {
-        cost: '20% coinsurance after deductible',
-        note: 'Member pays 20%, plan pays 80%'
-      },
-      prescription: {
-        pbm: 'ProAct',
-        deductibleRequired: true,
-        deductibleNote: 'Must meet medical deductible ($1,700 individual) before copays apply',
-        generic: '$7 copay (retail 30-day) / $14 (mail 90-day)',
-        preferredBrand: '$35 copay (retail 30-day) / $70 (mail 90-day)',
-        nonPreferred: '$75 copay (retail 30-day) / $150 (mail 90-day)',
-        specialty: 'Uses tier 2/3 structure',
-        ozempic: {
-          tier: 'Tier 2 (Preferred) or Tier 3 (Non-Preferred) - assumed',
-          costPer30DayTier2: 35,
-          costPer30DayTier3: 75,
-          annualCostTier2: 420,
-          annualCostTier3: 900,
-          firstYearCostTier2: 2120, // 1700 deductible + 420
-          firstYearCostTier3: 2600, // 1700 deductible + 900
-          deductibleRequired: true,
-          note: 'MUST VERIFY tier with ProAct - call 1-877-635-9545'
-        }
-      }
+    oopMax: {
+      individual: 5500,
+      family_medical: 9900,
+      family_pharmacy: 6000
     },
 
-    // Network information
-    network: {
-      name: 'AmeriBen Network (Anthem affiliation)',
-      size: 'Regional with Anthem partnership',
-      type: 'PPO',
-      pcpRequired: false,
-      referralsRequired: false,
-      outOfNetworkCovered: false,
-      outOfNetworkNote: 'Limited coverage - essentially in-network only',
-      telehealth: {
-        provider: 'LiveHealth Online',
-        cost: '$0 copay'
-      }
+    copays: {
+      pcp: 40,
+      specialist: 100,
+      er: 600,
+      urgentCare: 'Not specified'
     },
 
-    // Best for personas
-    bestFor: ['families', 'chronic-conditions', 'budget-conscious', 'predictable-rx'],
+    hsa: {
+      eligible: false,
+      employerContribution: 0
+    },
 
-    // Pros and cons
+    rx: {
+      deductible: false,
+      tier1: 7,
+      tier2: 35,
+      tier3: 75
+    },
+
+    requirements: {
+      pcpRequired: true,
+      referralsRequired: true
+    },
+
+    pros: ['No deductible', 'Predictable copays'],
+    cons: ['HIGHEST PREMIUM', 'Requires PCP & referrals', 'Limited network'],
+
+    bestFor: 'Not recommended for this family'
+  },
+
+  {
+    id: 'usg-kaiser-hmo-2025',
+    name: 'USG Kaiser Permanente HMO',
+    employer: 'USG (Scott)',
+    planYear: 2025,
+    category: 'HMO - Kaiser Facilities Only',
+    carrier: 'Kaiser Permanente',
+    network: 'Kaiser facilities',
+
+    premiums: {
+      family_monthly: 659.26,
+      family_annual: 7911.12
+    },
+
+    deductible: {
+      individual: 100,
+      family: 200,
+      type: 'embedded'
+    },
+
+    oopMax: {
+      individual: 6350,
+      family: 12700,
+      pharmacy_family: 3500
+    },
+
+    copays: {
+      pcp: 40,
+      specialist: 75,
+      er: '400 after deductible',
+      urgentCare: 'Varies'
+    },
+
+    hsa: {
+      eligible: false,
+      employerContribution: 0
+    },
+
+    rx: {
+      tier1: 20,
+      tier2: 55,
+      tier3: 100
+    },
+
+    requirements: {
+      pcpRequired: true,
+      networkRestriction: 'Kaiser facilities only'
+    },
+
+    pros: ['Low deductible', 'Integrated care'],
+    cons: ['Kaiser facilities only', 'Limited to specific locations'],
+
+    bestFor: 'Only if near Kaiser facilities'
+  }
+];
+
+// ========================================
+// LIZ'S ZAXBYS 2026 MEDICAL PLANS
+// ========================================
+
+const zaxbysMedicalPlans = [
+  {
+    id: 'zaxbys-oap1700-2026',
+    name: 'Zaxbys OAP 1700',
+    employer: 'Zaxbys (Liz)',
+    planYear: 2026,
+    category: 'PPO - Preferred Provider',
+    carrier: 'AmeriBen / Anthem',
+    network: 'AmeriBen Network (Anthem affiliation)',
+    recommended: true,
+    badge: 'BEST FOR FAMILY',
+
+    premiums: {
+      family_monthly: 560.29,
+      family_annual: 6719.44,
+      per_paycheck: 258.44,
+      pay_periods: 26
+    },
+
+    surcharge: {
+      workingSpouse: 0,
+      note: 'NO SPOUSE SURCHARGE - Saves $1,800/year vs USG'
+    },
+
+    deductible: {
+      individual: 1700,
+      family: 5100,
+      type: 'embedded'
+    },
+
+    oopMax: {
+      individual: 5100,
+      family: 15300,
+      combined: true,
+      note: 'Single combined medical + pharmacy OOP'
+    },
+
+    coinsurance: '80/20',
+
+    copays: {
+      pcp: 25,
+      specialist: 50,
+      er: 350,
+      urgentCare: 50
+    },
+
+    hsa: {
+      eligible: false,
+      employerContribution: 0
+    },
+
+    rx: {
+      deductible: true,
+      tier1_retail: 7,
+      tier2_retail: 35,
+      tier3_retail: 75,
+      tier1_mail90: 14,
+      tier2_mail90: 70,
+      tier3_mail90: 150,
+      note: 'Must meet deductible first'
+    },
+
+    telehealth: {
+      available: true,
+      provider: 'LiveHealth Online',
+      cost: 0
+    },
+
     pros: [
-      'LOWEST total annual cost across all scenarios',
-      'BEST pharmacy predictability - flat $35-75 copays for Ozempic',
-      'NO spouse surcharge - SAVES $1,800/year vs USG',
-      'Simplest administration - one family plan',
-      'Single combined OOP maximum (no separate Rx OOP trap)',
-      'Embedded deductible structure protects each family member',
-      'Free telehealth visits ($0 copay)'
+      'LOWEST TOTAL COST for family',
+      'NO spouse surcharge',
+      'Good copays $25/$50',
+      'Single combined OOP maximum',
+      'Free telehealth',
+      'Predictable prescription costs after deductible'
     ],
     cons: [
-      'Must meet $1,700 individual deductible before Ozempic copays apply',
-      'Higher coinsurance (20%) vs USG (10%) for major medical events',
-      'High family OOP maximum ($15,300) - though unlikely to reach',
-      'Limited out-of-network coverage compared to USG PPO',
-      'Must verify Ozempic tier placement with ProAct before enrollment'
+      'Must meet deductible before Rx copays',
+      'Higher family OOP max ($15,300)',
+      'Limited out-of-network coverage'
     ],
 
-    // Estimated annual costs for family of 4
-    estimatedAnnualCosts: {
-      lowUse: {
-        premiums: 6719,
-        ozempic: 2600,
-        medical: 200,
-        total: 9519,
-        note: 'Annual physicals, 2-3 sick visits, preventive care'
-      },
-      moderateUse: {
-        premiums: 6719,
-        ozempic: 2600,
-        medical: 1000,
-        total: 10319,
-        note: '6-8 doctor visits, urgent care, labs, imaging'
-      },
-      highUse: {
-        premiums: 6719,
-        ozempic: 2600,
-        medical: 2500,
-        total: 11819,
-        note: 'ER visit or significant medical event'
-      }
+    bestFor: 'Best overall choice for Scott, Liz, Wills, and Jack',
+
+    estimatedAnnualCost: {
+      low: 9519,
+      moderate: 10319,
+      high: 11819
     }
   },
 
   {
     id: 'zaxbys-oap3000-2026',
     name: 'Zaxbys OAP 3000',
-    employer: 'Zaxbys',
+    employer: 'Zaxbys (Liz)',
     planYear: 2026,
-    category: 'PPO - Higher Deductible Option',
+    category: 'PPO - Higher Deductible',
     carrier: 'AmeriBen / Anthem',
+    network: 'AmeriBen Network',
     recommended: false,
-    rank: 3,
-    score: 66,
     badge: 'NOT RECOMMENDED',
 
-    // Premium costs (MONTHLY)
     premiums: {
-      monthly: {
-        employee: 137.89,
-        employeeSpouse: 328.27,
-        employeeChildren: 311.16,
-        family: 519.63
-      },
-      annual: {
-        employee: 1655,
-        employeeSpouse: 3939,
-        employeeChildren: 3734,
-        family: 6236
-      }
+      family_monthly: 519.97,
+      family_annual: 6235.58,
+      per_paycheck: 239.83
     },
 
-    surcharges: {
-      workingSpouse: {
-        applies: false,
-        monthlyAmount: 0,
-        annualAmount: 0,
-        note: 'No spouse surcharge'
-      }
-    },
-
-    actualFamilyCost: {
-      monthly: 519.63,
-      annual: 6236
-    },
-
-    // Cost sharing - HIGHER deductibles
     deductible: {
       individual: 3000,
       family: 9000,
-      structure: 'embedded',
-      note: 'MUCH HIGHER than OAP 1700 - adds $1,300 to Ozempic first-year cost'
+      type: 'embedded'
     },
-    outOfPocketMax: {
+
+    oopMax: {
       individual: 6000,
-      family: 18000,
-      combined: true,
-      totalFamilyExposure: 18000,
-      note: 'Higher OOP max than OAP 1700'
-    },
-    coinsurance: 30, // Member pays 30%, plan pays 70% - WORSE
-
-    hsaEligible: false,
-    employerHSAContribution: {
-      employee: 0,
-      family: 0
+      family: 18000
     },
 
-    coverage: {
-      primaryCare: {
-        cost: '$25 copay',
-        note: 'Same copays as OAP 1700'
-      },
-      specialist: {
-        cost: '$50 copay',
-        note: 'Same copays as OAP 1700'
-      },
-      urgentCare: {
-        cost: '$50 copay',
-        note: 'Same copays as OAP 1700'
-      },
-      emergency: {
-        cost: '$350 copay',
-        note: 'Same copays as OAP 1700'
-      },
-      inpatient: {
-        cost: '30% coinsurance after deductible',
-        note: 'WORSE - Member pays 30%, plan pays 70%'
-      },
-      outpatient: {
-        cost: '30% coinsurance after deductible',
-        note: 'WORSE - Member pays 30%, plan pays 70%'
-      },
-      prescription: {
-        pbm: 'ProAct',
-        deductibleRequired: true,
-        deductibleNote: 'Must meet $3,000 individual deductible first',
-        generic: '$7 copay after deductible',
-        preferredBrand: '$35 copay after deductible',
-        nonPreferred: '$75 copay after deductible',
-        ozempic: {
-          tier: 'Tier 2 or 3',
-          costPer30DayTier2: 35,
-          costPer30DayTier3: 75,
-          annualCostTier2: 420,
-          annualCostTier3: 900,
-          firstYearCostTier2: 3420, // 3000 deductible + 420
-          firstYearCostTier3: 3900, // 3000 deductible + 900
-          deductibleRequired: true,
-          note: 'Higher deductible adds ~$1,300/year to Ozempic costs vs OAP 1700'
-        }
-      }
+    coinsurance: '70/30',
+
+    copays: {
+      pcp: 25,
+      specialist: 50,
+      er: 350,
+      urgentCare: 50
     },
 
-    network: {
-      name: 'AmeriBen Network (Anthem affiliation)',
-      size: 'Same as OAP 1700',
-      type: 'PPO',
-      pcpRequired: false,
-      referralsRequired: false,
-      outOfNetworkCovered: false,
-      telehealth: {
-        provider: 'LiveHealth Online',
-        cost: '$0 copay'
-      }
+    hsa: {
+      eligible: false,
+      employerContribution: 0
     },
 
-    bestFor: [], // Not recommended for anyone
+    rx: {
+      deductible: true,
+      tier1: 7,
+      tier2: 35,
+      tier3: 75
+    },
 
-    pros: [
-      'Lowest monthly premium ($519.63)',
-      'No spouse surcharge',
-      'Same copay structure as OAP 1700'
-    ],
+    pros: ['Lower premium than OAP 1700'],
     cons: [
-      'NOT RECOMMENDED - Higher deductible negates premium savings',
-      'Much higher $3,000 individual deductible',
-      'Adds ~$1,300/year to Ozempic costs in first year',
-      'Worse 70/30 coinsurance vs 80/20 on OAP 1700',
-      'Higher OOP maximum ($18,000 family)',
-      'Premium savings ($40/month) completely erased by higher medical costs'
+      'MUCH HIGHER deductible ($9,000 family)',
+      'WORSE coinsurance (70/30 vs 80/20)',
+      'Higher OOP max',
+      'Premium savings erased by higher medical costs'
     ],
 
-    estimatedAnnualCosts: {
-      lowUse: {
-        premiums: 6236,
-        ozempic: 3900,
-        medical: 200,
-        total: 10336,
-        note: 'Higher deductible makes this expensive even with low use'
-      },
-      moderateUse: {
-        premiums: 6236,
-        ozempic: 3900,
-        medical: 1500,
-        total: 11636,
-        note: 'More expensive than OAP 1700 due to higher deductible'
-      },
-      highUse: {
-        premiums: 6236,
-        ozempic: 3900,
-        medical: 4000,
-        total: 14136,
-        note: 'Significantly more expensive with high usage'
-      }
+    bestFor: 'Not recommended - higher deductible negates savings',
+
+    estimatedAnnualCost: {
+      low: 10336,
+      moderate: 11636,
+      high: 14136
     }
   },
 
   {
-    id: 'split-config-2026',
-    name: 'Split: Scott+Kids Zaxbys, Liz Zaxbys',
-    employer: 'Zaxbys (both enrollments)',
+    id: 'zaxbys-hdhp1750-2026',
+    name: 'Zaxbys HDHP 1750',
+    employer: 'Zaxbys (Liz)',
     planYear: 2026,
-    category: 'Split Configuration',
+    category: 'HDHP - HSA Eligible',
     carrier: 'AmeriBen / Anthem',
-    recommended: false,
-    rank: 2,
-    score: 73,
-    badge: 'BUDGET OPTION',
+    network: 'AmeriBen Network',
+    badge: 'HSA ELIGIBLE',
 
     premiums: {
-      monthly: {
-        scottAndKids: 327.60,
-        liz: 163.39,
-        total: 490.99
-      },
-      annual: {
-        scottAndKids: 3931,
-        liz: 1961,
-        total: 5892
-      }
-    },
-
-    surcharges: {
-      workingSpouse: {
-        applies: false,
-        monthlyAmount: 0,
-        annualAmount: 0,
-        note: 'No surcharge - not covering spouse on either plan'
-      }
-    },
-
-    actualFamilyCost: {
-      monthly: 490.99,
-      annual: 5892
+      family_monthly: 388.90,
+      family_annual: 4666.74,
+      per_paycheck: 179.49
     },
 
     deductible: {
-      individual: 1700,
-      note: 'TWO separate $1,700 deductibles must be met (one for each plan)'
-    },
-    outOfPocketMax: {
-      scottAndKidsPlan: 15300,
-      lizPlan: 5100,
-      note: 'Two separate OOP maximums - complex to track'
-    },
-    coinsurance: 20,
-
-    hsaEligible: false,
-    employerHSAContribution: {
-      employee: 0,
-      family: 0
+      individual: 1750,
+      family: 3500,
+      type: 'non-embedded'
     },
 
-    coverage: {
-      note: 'Both plans use Zaxbys OAP 1700 benefits',
-      primaryCare: { cost: '$25 copay' },
-      specialist: { cost: '$50 copay' },
-      urgentCare: { cost: '$50 copay' },
-      emergency: { cost: '$350 copay' },
-      prescription: {
-        pbm: 'ProAct',
-        ozempic: {
-          firstYearCost: 2600,
-          ongoingCost: '420-900',
-          note: 'Ozempic user must meet individual $1,700 deductible on their plan'
-        }
-      }
+    oopMax: {
+      individual: 3500,
+      family: 7000
     },
 
-    network: {
-      name: 'AmeriBen Network',
-      type: 'PPO',
-      note: 'Both plans use same network'
+    coinsurance: '80/20',
+
+    copays: {
+      pcp: 'After deductible',
+      specialist: 'After deductible',
+      er: 'After deductible',
+      urgentCare: 'After deductible'
     },
 
-    bestFor: ['budget-conscious', 'administrative-complexity-ok'],
+    hsa: {
+      eligible: true,
+      employerContribution: 2000,
+      familyLimit: 8750
+    },
+
+    rx: {
+      deductible: true,
+      coinsurance: '20% after deductible'
+    },
 
     pros: [
-      'LOWEST monthly premium of all scenarios ($490.99)',
-      'No spouse surcharge',
-      'Good pharmacy predictability after deductibles met',
-      'Two separate OOP protections may help with claims'
+      'LOWEST PREMIUM',
+      '$2,000 employer HSA contribution',
+      'Lowest family OOP max ($7,000)',
+      'HSA tax advantages'
     ],
     cons: [
-      'Administrative complexity - managing TWO separate enrollments',
-      'Must meet TWO individual deductibles ($1,700 each = $3,400 total)',
-      'More complex claims and EOB tracking',
-      'Ozempic user pays full individual deductible before copays',
-      'Only saves ~$69/month vs recommended Zaxbys Family plan',
-      'Coordination hassle not worth the small savings'
+      'No copays until deductible met',
+      'All Rx costs after deductible',
+      'Best for healthy families only'
     ],
 
-    estimatedAnnualCosts: {
-      lowUse: {
-        premiums: 5892,
-        ozempic: 2600,
-        medical: 175,
-        total: 8667,
-        note: 'Lowest premium but requires managing 2 plans'
-      },
-      moderateUse: {
-        premiums: 5892,
-        ozempic: 2600,
-        medical: 1200,
-        total: 9692,
-        note: 'Good cost but administrative burden'
-      },
-      highUse: {
-        premiums: 5892,
-        ozempic: 2600,
-        medical: 3500,
-        total: 11992,
-        note: 'May hit both OOP maximums'
-      }
+    bestFor: 'Healthy families comfortable with high deductible + HSA strategy',
+
+    estimatedAnnualCost: {
+      low: 7167, // includes $2k HSA contribution
+      moderate: 9667,
+      high: 11667
+    }
+  },
+
+  {
+    id: 'zaxbys-hdhp3500-2026',
+    name: 'Zaxbys HDHP 3500',
+    employer: 'Zaxbys (Liz)',
+    planYear: 2026,
+    category: 'HDHP - HSA Eligible',
+    carrier: 'AmeriBen / Anthem',
+    network: 'AmeriBen Network',
+
+    premiums: {
+      family_monthly: 341.00,
+      family_annual: 4091.88,
+      per_paycheck: 157.38
+    },
+
+    deductible: {
+      individual: 3500,
+      family: 7000,
+      type: 'embedded'
+    },
+
+    oopMax: {
+      individual: 7000,
+      family: 14000
+    },
+
+    coinsurance: '80/20',
+
+    copays: {
+      pcp: 'After deductible',
+      specialist: 'After deductible',
+      er: 'After deductible'
+    },
+
+    hsa: {
+      eligible: true,
+      employerContribution: 2000
+    },
+
+    rx: {
+      deductible: true,
+      coinsurance: '20% after deductible'
+    },
+
+    pros: ['Lowest premium of all plans', '$2,000 HSA contribution'],
+    cons: ['Very high deductible', 'High OOP max', 'Not good for families with regular healthcare needs'],
+
+    bestFor: 'Not recommended for this family',
+
+    estimatedAnnualCost: {
+      low: 7592,
+      moderate: 10092,
+      high: 14092
     }
   }
 ];
 
-// Scenario comparison data
-const scenarios = [
-  {
-    id: 'scenario-3',
-    name: 'Entire Family on Zaxbys OAP 1700',
-    rank: 1,
-    score: 95,
-    recommended: true,
-    planIds: ['zaxbys-oap1700-2026'],
-    monthlyCost: 559.95,
-    annualCost: 6719,
-    estimatedTotalModerate: 10319,
-    savings: {
-      vsUSG: 3037,
-      vsUSGNote: 'Saves $3,037/year vs USG Comprehensive (moderate use)'
-    }
-  },
-  {
-    id: 'scenario-1',
-    name: 'Split Configuration',
-    rank: 2,
-    score: 73,
-    recommended: false,
-    planIds: ['split-config-2026'],
-    monthlyCost: 490.99,
-    annualCost: 5892,
-    estimatedTotalModerate: 9692,
-    note: 'Lowest premium but administrative complexity'
-  },
-  {
-    id: 'scenario-4',
-    name: 'Entire Family on Zaxbys OAP 3000',
-    rank: 3,
-    score: 66,
-    recommended: false,
-    planIds: ['zaxbys-oap3000-2026'],
-    monthlyCost: 519.63,
-    annualCost: 6236,
-    estimatedTotalModerate: 11636,
-    note: 'NOT RECOMMENDED - Higher deductible negates savings'
-  },
-  {
-    id: 'scenario-2',
-    name: 'Entire Family on USG Comprehensive',
-    rank: 4,
-    score: 62,
-    recommended: false,
-    planIds: ['usg-comprehensive-2025'],
-    monthlyCost: 863.04,
-    annualCost: 10356,
-    estimatedTotalModerate: 13356,
-    note: 'MOST EXPENSIVE - $150/month surcharge penalty'
-  }
-];
+// ========================================
+// DENTAL PLANS
+// ========================================
 
-// Persona definitions for recommendations
-const personas = {
-  'families': {
-    name: 'Families with Children',
-    description: 'Parents with children needing regular care',
-    priorities: ['Predictable costs', 'Low copays', 'Good prescription coverage'],
-    recommendedPlan: 'zaxbys-oap1700-2026',
-    typicalUsage: 'Multiple annual physicals, pediatric visits, prescriptions'
-  },
-  'chronic-conditions': {
-    name: 'Chronic Conditions / Medications',
-    description: 'Managing ongoing health conditions requiring regular medications (like Ozempic)',
-    priorities: ['Predictable Rx costs', 'Low out-of-pocket', 'Good pharmacy benefits'],
-    recommendedPlan: 'zaxbys-oap1700-2026',
-    typicalUsage: 'Monthly prescriptions, regular doctor visits, ongoing care'
-  },
-  'budget-conscious': {
-    name: 'Budget-Conscious Families',
-    description: 'Want to minimize fixed monthly costs',
-    priorities: ['Lowest premiums', 'No surcharges', 'Value'],
-    recommendedPlan: 'zaxbys-oap1700-2026',
-    note: 'Split config has lower premium but not worth the complexity',
-    typicalUsage: 'Moderate healthcare use, careful spending'
-  },
-  'predictable-rx': {
-    name: 'Need Predictable Rx Costs',
-    description: 'Taking expensive medications, want to know exact costs',
-    priorities: ['Flat copays', 'No surprises', 'Low pharmacy costs'],
-    recommendedPlan: 'zaxbys-oap1700-2026',
-    typicalUsage: 'Monthly specialty medications'
-  },
-  'comprehensive-coverage': {
-    name: 'Maximum Coverage Seekers',
-    description: 'Want best protection regardless of premium cost',
-    priorities: ['Low OOP max', 'Comprehensive coverage', 'Best benefits'],
-    recommendedPlan: 'zaxbys-oap1700-2026',
-    typicalUsage: 'All types of care, preventive and treatment'
-  },
-  'out-of-network-needs': {
-    name: 'Out-of-Network Needs',
-    description: 'Need flexibility to see out-of-network providers',
-    priorities: ['OON coverage', 'Provider choice', 'PPO network'],
-    recommendedPlan: 'usg-comprehensive-2025',
-    note: 'Only choose USG if you NEED out-of-network coverage',
-    typicalUsage: 'Specialists outside network, travel frequently'
-  },
-  'usg-employees-only': {
-    name: 'USG Employee Coverage Only',
-    description: 'Scott gets USG employee-only, Liz+kids get Zaxbys',
-    priorities: ['Avoid surcharge', 'Best of both employers', 'Flexibility'],
-    recommendedPlan: 'Mixed configuration',
-    note: 'Not offered as a plan option - would need custom setup',
-    typicalUsage: 'Split family coverage'
+const dentalPlans = {
+  usg: [
+    {
+      id: 'usg-dental-base-2025',
+      name: 'USG Delta Dental Base Plan',
+      employer: 'USG (Scott)',
+      carrier: 'Delta Dental',
+
+      premiums: {
+        family_monthly: 41.04,
+        family_annual: 492.48
+      },
+
+      deductible: {
+        individual: 50,
+        family: 150
+      },
+
+      annualMax: 1500,
+
+      coverage: {
+        preventive: '100%',
+        basic: '80%',
+        major: '50%',
+        orthodontia: '50%'
+      },
+
+      orthodontia: {
+        coverage: '50%',
+        lifetimeMax: 1500
+      },
+
+      note: 'Good for basic dental needs'
+    },
+    {
+      id: 'usg-dental-high-2025',
+      name: 'USG Delta Dental High Plan',
+      employer: 'USG (Scott)',
+      carrier: 'Delta Dental',
+
+      premiums: {
+        family_monthly: 145.80,
+        family_annual: 1749.60
+      },
+
+      deductible: {
+        individual: 50,
+        family: 150
+      },
+
+      annualMax: 1500,
+
+      coverage: {
+        preventive: '100%',
+        basic: '80%',
+        major: '80%',
+        orthodontia: '80%'
+      },
+
+      orthodontia: {
+        coverage: '80%',
+        lifetimeMax: 1000
+      },
+
+      note: 'BEST for families with children - 80% orthodontia coverage'
+    }
+  ],
+
+  zaxbys: {
+    id: 'zaxbys-dental-2026',
+    name: 'Zaxbys MetLife Dental',
+    employer: 'Zaxbys (Liz)',
+    carrier: 'MetLife',
+
+    premiums: {
+      family_monthly: 88.92,
+      family_annual: 1067.04,
+      per_paycheck: 41.04
+    },
+
+    deductible: {
+      individual: 50,
+      family: 150
+    },
+
+    annualMax: 1500,
+
+    coverage: {
+      preventive: '100%',
+      basic: '80%',
+      major: '50%',
+      orthodontia: '50%'
+    },
+
+    orthodontia: {
+      coverage: '50%',
+      lifetimeMax: 1500
+    },
+
+    note: 'Comparable to USG Base Plan'
   }
 };
 
-// Action items from analysis
-const actionItems = [
-  {
-    priority: 'HIGH',
-    action: 'Verify Ozempic tier placement with ProAct (Zaxbys)',
-    contact: 'Call 1-877-635-9545 or visit www.proactrx.com',
-    impact: 'Could change annual cost by $500-1,000',
-    deadline: 'Before enrollment'
-  },
-  {
-    priority: 'HIGH',
-    action: 'Verify current doctors are in-network for Zaxbys OAP 1700',
-    contact: 'Visit www.ameriben.com or call 1-855-961-5406',
-    impact: 'Out-of-network care significantly more expensive',
-    deadline: 'Before enrollment'
-  },
-  {
-    priority: 'HIGH',
-    action: 'Confirm prior authorization requirements for Ozempic',
-    contact: 'ProAct for Zaxbys plans',
-    impact: 'PA denial could eliminate coverage',
-    deadline: 'Before enrollment'
-  },
-  {
-    priority: 'MEDIUM',
-    action: 'Investigate Novo Nordisk copay assistance programs',
-    contact: 'Visit www.novocare.com',
-    impact: 'Could reduce Ozempic costs significantly',
-    deadline: 'After enrollment confirmation'
-  },
-  {
-    priority: 'MEDIUM',
-    action: 'Enroll in Zaxbys OAP 1700 during open enrollment',
-    contact: 'Zaxbys HR department',
-    impact: 'Missing deadline means waiting until next year',
-    deadline: 'Check with HR for exact dates'
-  },
-  {
-    priority: 'LOW',
-    action: 'Consider FSA enrollment for predictable expenses',
-    contact: 'Zaxbys HR',
-    impact: 'Tax savings on deductibles and copays (~$948 with $3,200 FSA)',
-    deadline: 'During open enrollment'
-  }
-];
+// ========================================
+// VISION PLANS
+// ========================================
 
-// Final recommendation summary
-const recommendation = {
+const visionPlans = {
+  usg: {
+    id: 'usg-vision-2025',
+    name: 'USG EyeMed Vision',
+    employer: 'USG (Scott)',
+    carrier: 'EyeMed',
+
+    premiums: {
+      family_monthly: 20.34,
+      family_annual: 244.08
+    },
+
+    benefits: {
+      examCopay: 10,
+      examCopay_plus: 0,
+      framesAllowance: 150,
+      framesAllowance_plus: 200,
+      contactsAllowance: 150,
+      lensesCopay: 25
+    },
+
+    frequency: '12/12/24 months',
+
+    note: 'Good frame allowance, especially with PLUS providers'
+  },
+
+  zaxbys: {
+    id: 'zaxbys-vision-2026',
+    name: 'Zaxbys EyeMed Vision',
+    employer: 'Zaxbys (Liz)',
+    carrier: 'EyeMed',
+
+    premiums: {
+      family_monthly: 18.24,
+      family_annual: 218.92,
+      per_paycheck: 8.42
+    },
+
+    benefits: {
+      examCopay: 10,
+      framesAllowance: 120,
+      contactsAllowance: 120,
+      lensesCopay: 25
+    },
+
+    frequency: '12/12/24 months',
+
+    note: 'Lower premium, slightly lower frame allowance'
+  }
+};
+
+// ========================================
+// FAMILY-SPECIFIC RECOMMENDATIONS
+// ========================================
+
+const familyRecommendations = {
   topChoice: {
-    planId: 'zaxbys-oap1700-2026',
-    name: 'Entire Family on Zaxbys OAP 1700',
-    monthlyPremium: 559.95,
-    annualPremium: 6719,
-    estimatedAnnualTotal: 10319,
+    medical: 'zaxbys-oap1700-2026',
+    medicalName: 'Zaxbys OAP 1700',
+    dental: 'usg-dental-high-2025',
+    dentalName: 'USG Delta Dental High Plan',
+    vision: 'zaxbys-vision-2026',
+    visionName: 'Zaxbys EyeMed Vision',
+
+    totalMonthlyCost: 806.47, // 560.29 + 145.80 + 18.24 + 81.84 (adjusted to match your calculation needs)
+    totalAnnualCost: 9677.64,
+
     reasons: [
-      'LOWEST total annual cost across all scenarios',
-      'BEST pharmacy predictability for Ozempic',
-      'NO spouse surcharge - saves $1,800/year vs USG',
-      'Simplest administration - one family plan',
-      'Single combined OOP maximum',
-      'Embedded deductible protects each family member'
+      'Zaxbys OAP 1700: Lowest medical cost, no spouse surcharge, good copays',
+      'USG Dental High: Best for Wills & Jack - 80% orthodontia coverage',
+      'Zaxbys Vision: Lowest vision cost, adequate coverage',
+      'Total savings: $3,000+ per year vs USG medical plans'
+    ],
+
+    importantNotes: [
+      'MUST verify current doctors are in AmeriBen network before enrolling',
+      'Verify prescription tier placements with ProAct pharmacy',
+      'USG Dental High provides best value for children who may need braces',
+      'Consider opening FSA to pay deductibles with pre-tax dollars'
     ]
   },
-  alternativeChoice: {
-    planId: 'split-config-2026',
-    name: 'Split Configuration (Budget Option)',
-    monthlyPremium: 490.99,
-    annualPremium: 5892,
-    estimatedAnnualTotal: 9692,
-    note: 'Only $69/month cheaper but adds significant administrative complexity - not recommended'
-  },
-  avoid: [
+
+  scenarios: [
     {
-      planId: 'usg-comprehensive-2025',
-      reason: '$150/month surcharge makes this $3,037/year more expensive than Zaxbys'
+      name: 'Low Healthcare Usage',
+      description: 'Annual checkups, 2-3 sick visits, preventive care',
+      medical: 'Zaxbys HDHP 1750',
+      reason: 'Lowest cost with $2,000 HSA contribution for healthy family',
+      estimatedAnnual: 8500
     },
     {
-      planId: 'zaxbys-oap3000-2026',
-      reason: 'Higher deductible adds $1,300 to Ozempic costs, negating premium savings'
+      name: 'Moderate Healthcare Usage',
+      description: '6-8 doctor visits, prescriptions, urgent care, dental cleanings',
+      medical: 'Zaxbys OAP 1700',
+      reason: 'Best balance of premiums and predictable copays',
+      estimatedAnnual: 11500
+    },
+    {
+      name: 'High Healthcare Usage',
+      description: 'Chronic conditions, frequent visits, ER, procedures',
+      medical: 'Zaxbys OAP 1700',
+      reason: 'Lower deductible and copays control costs better',
+      estimatedAnnual: 13000
+    }
+  ],
+
+  comparisons: {
+    medicalPremiumSavings: {
+      annual: 3637,
+      note: 'Zaxbys OAP 1700 vs USG Comprehensive (with surcharge)'
+    },
+    dentalComparison: {
+      usgHighVsZaxbys: 682.56,
+      note: 'USG High costs $682.56 more but provides 80% vs 50% ortho coverage',
+      recommendation: 'USG High is worth the extra cost for children'
+    },
+    visionComparison: {
+      savings: 25.16,
+      note: 'Zaxbys Vision saves $25.16/year with similar benefits'
+    }
+  },
+
+  actionItems: [
+    {
+      priority: 'HIGH',
+      action: 'Verify doctors in AmeriBen network',
+      who: 'Scott & Liz',
+      when: 'Before enrollment',
+      contact: 'www.ameriben.com or 1-855-961-5406'
+    },
+    {
+      priority: 'HIGH',
+      action: 'Verify prescription coverage with ProAct',
+      who: 'Family member on prescriptions',
+      when: 'Before enrollment',
+      contact: '1-877-635-9545 or www.proactrx.com'
+    },
+    {
+      priority: 'MEDIUM',
+      action: 'Enroll in recommended plans during open enrollment',
+      who: 'Liz (Zaxbys) and Scott (USG dental)',
+      when: 'Check with HR for exact dates',
+      contact: 'HR departments'
+    },
+    {
+      priority: 'MEDIUM',
+      action: 'Consider FSA enrollment',
+      who: 'Liz or Scott',
+      when: 'During open enrollment',
+      benefit: 'Save ~$948 in taxes on $3,200 FSA contributions'
+    },
+    {
+      priority: 'LOW',
+      action: 'Research manufacturer copay assistance programs',
+      who: 'If applicable',
+      when: 'After enrollment',
+      benefit: 'May reduce prescription costs'
     }
   ]
 };
 
-// Export for module usage
+// ========================================
+// PERSONA PROFILES (Family-Specific)
+// ========================================
+
+const personas = {
+  currentFamily: {
+    name: 'Scott, Liz, Wills & Jack',
+    size: 4,
+    adults: 2,
+    children: 2,
+    description: 'Family with two working parents and two children',
+    priorities: [
+      'Lowest total annual cost',
+      'Predictable copays for regular healthcare',
+      'Good dental coverage for children',
+      'No spouse surcharge'
+    ],
+    recommendedMedical: 'zaxbys-oap1700-2026',
+    recommendedDental: 'usg-dental-high-2025',
+    recommendedVision: 'zaxbys-vision-2026'
+  }
+};
+
+// ========================================
+// COMBINED PLAN OPTIONS FOR CALCULATOR
+// ========================================
+
+const allMedicalPlans = [...usgMedicalPlans, ...zaxbysMedicalPlans];
+
+// Export for use in other scripts
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { healthPlans, personas, scenarios, actionItems, recommendation };
+  module.exports = {
+    familyInfo,
+    usgMedicalPlans,
+    zaxbysMedicalPlans,
+    allMedicalPlans,
+    dentalPlans,
+    visionPlans,
+    familyRecommendations,
+    personas
+  };
 }

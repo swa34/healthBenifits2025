@@ -1,0 +1,195 @@
+{
+  "plans": {
+    "A": {
+      "tier_premiums_monthly": {
+        "employee_only": 220.0,
+        "employee_spouse": 499.14,
+        "family": 713.04
+      },
+      "surcharge_rules": {
+        "spouse_works_elsewhere": {
+          "applies": true,
+          "amount_monthly": 150,
+          "citation": "USG working-spouse surcharge"
+        }
+      },
+      "deductible": {
+        "individual": 1500,
+        "family": 4500
+      },
+      "oop_max": {
+        "individual": 3300,
+        "family": 6600
+      },
+      "copays": {
+        "pcp": 25,
+        "specialist": 50,
+        "urgent_care": 50,
+        "er": 600
+      },
+      "rx": {
+        "tiers": {
+          "generic": "$20",
+          "preferred_brand": "20% (min $50, max $125)",
+          "non_preferred_brand": "35% (min $125, max $250)",
+          "specialty": "Preferred max $175 (30-day)"
+        },
+        "ozempic": {
+          "covered": true,
+          "tier": "preferred/non-preferred brand (not explicitly listed)",
+          "member_cost": "20% (min $50, max $125) retail; $175 specialty cap",
+          "notes": "PA/quantity limits may apply"
+        }
+      },
+      "network": {
+        "in_network": "PPO-style, no referrals",
+        "out_of_network": "Covered with higher cost share"
+      },
+      "notes": [
+        "Separate medical vs pharmacy OOP"
+      ]
+    },
+    "B": {
+      "tier_premiums_monthly": {
+        "employee_only": 163.39,
+        "employee_spouse": 356.27,
+        "family": 559.95
+      },
+      "surcharge_rules": {
+        "spouse_works_elsewhere": {
+          "applies": false,
+          "amount_monthly": 0,
+          "citation": "No working-spouse surcharge stated"
+        }
+      },
+      "deductible": {
+        "individual": 1700,
+        "family": 5100
+      },
+      "oop_max": {
+        "individual": 5100,
+        "family": 15300
+      },
+      "copays": {
+        "pcp": 25,
+        "specialist": 50,
+        "urgent_care": 50,
+        "er": 350
+      },
+      "rx": {
+        "tiers": {
+          "generic": "$7",
+          "preferred_brand": "$35",
+          "non_preferred_brand": "$75",
+          "specialty": "N/A (tiered)"
+        },
+        "ozempic": {
+          "covered": true,
+          "tier": "Tier 2\u20133 (not explicitly listed)",
+          "member_cost": "$35\u2013$75 per 30-day; $70\u2013$150 per 90-day mail",
+          "notes": "PA may apply"
+        }
+      },
+      "network": {
+        "in_network": "Anthem OAP; telehealth $0",
+        "out_of_network": "Not shown in booklet"
+      },
+      "notes": []
+    }
+  },
+  "scenarios": [
+    {
+      "name": "Each on own employer plan (kids on B Emp+Children)",
+      "monthly_premium_total": 710.99,
+      "monthly_surcharge_total": 0.0,
+      "monthly_total": 710.99,
+      "annual_total": 8531.88,
+      "ozempic_est_annual": "420-900",
+      "illustrative_annual": {
+        "low": "8531.88 + 420-900 + 75",
+        "moderate": "8531.88 + 420-900 + 125",
+        "higher": "8531.88 + 420-900 + 475"
+      },
+      "score": {
+        "pharmacy": 26,
+        "annual_cost": 22,
+        "risk": 15,
+        "access": 9,
+        "gotchas": 5,
+        "total": 77
+      }
+    },
+    {
+      "name": "All on Plan A (USG Family with surcharge)",
+      "monthly_premium_total": 713.04,
+      "monthly_surcharge_total": 150.0,
+      "monthly_total": 863.04,
+      "annual_total": 10356.48,
+      "ozempic_est_annual": "600-2100",
+      "illustrative_annual": {
+        "low": "10356.48 + 600-2100 + 75",
+        "moderate": "10356.48 + 600-2100 + 125",
+        "higher": "10356.48 + 600-2100 + 725"
+      },
+      "score": {
+        "pharmacy": 20,
+        "annual_cost": 12,
+        "risk": 15,
+        "access": 9,
+        "gotchas": 2,
+        "total": 58
+      }
+    },
+    {
+      "name": "All on Plan B (Zaxby's Family)",
+      "monthly_premium_total": 559.95,
+      "monthly_surcharge_total": 0.0,
+      "monthly_total": 559.95,
+      "annual_total": 6719.4,
+      "ozempic_est_annual": "420-900",
+      "illustrative_annual": {
+        "low": "6719.4 + 420-900 + 75",
+        "moderate": "6719.4 + 420-900 + 125",
+        "higher": "6719.4 + 420-900 + 475"
+      },
+      "score": {
+        "pharmacy": 27,
+        "annual_cost": 30,
+        "risk": 14,
+        "access": 8,
+        "gotchas": 4,
+        "total": 83
+      }
+    },
+    {
+      "name": "Mixed (A Emp-Only + B Emp+Children) \u2013 Recommended",
+      "monthly_premium_total": 547.6,
+      "monthly_surcharge_total": 0.0,
+      "monthly_total": 547.6,
+      "annual_total": 6571.2,
+      "ozempic_est_annual": "420-900",
+      "illustrative_annual": {
+        "low": "6571.2 + 420-900 + 75",
+        "moderate": "6571.2 + 420-900 + 125",
+        "higher": "6571.2 + 420-900 + 475"
+      },
+      "score": {
+        "pharmacy": 27,
+        "annual_cost": 32,
+        "risk": 15,
+        "access": 9,
+        "gotchas": 5,
+        "total": 88
+      }
+    }
+  ],
+  "recommendation": {
+    "best_overall": "Scenario 4 (Mixed: A Emp-Only + B Emp+Children)",
+    "best_budget": "Scenario 3 (All on Zaxby's Family)",
+    "best_predictable_rx": "Scenario 3 (or Scenario 4)",
+    "rationale": [
+      "Avoids USG $150/mo working-spouse surcharge while keeping broad access for employee and low premiums/predictable Rx for family.",
+      "Anchors Ozempic to simple copays ($35\u2013$75) rather than percentage coinsurance."
+    ]
+  }
+}
