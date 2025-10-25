@@ -1,0 +1,61 @@
+# GitHub Pages Configuration
+# Health Benefits Advisor
+
+# Site settings
+title: Health Benefits Advisor
+description: Comprehensive health benefits analysis and decision-making tool with interactive calculator
+author: Health Benefits Team
+email: benefits@example.com
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# GitHub Pages specific
+theme: null  # Using custom HTML/CSS, no Jekyll theme
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - .gitignore
+  - node_modules/
+  - vendor/
+
+# Include files
+include:
+  - _config.yml
+
+# Site metadata for SEO
+lang: en-US
+timezone: America/New_York
+
+# Social sharing (update with your info)
+social:
+  name: Health Benefits Advisor
+  links:
+    - https://github.com/yourusername/health-benefits-advisor
+
+# Analytics (optional - add your tracking ID)
+# google_analytics: UA-XXXXXXXXX-X
+
+# Plugins (GitHub Pages supported)
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# SEO settings
+seo:
+  type: WebApplication
+  name: Health Benefits Advisor
+  headline: Interactive Health Insurance Calculator and Comparison Tool
+  description: Make informed health insurance decisions with data-driven recommendations and personalized cost calculations.
+  url: https://yourusername.github.io/health-benefits-advisor
+  logo: /assets/logo.png
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: none
+      author: Health Benefits Team

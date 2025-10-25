@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive health benefits calculator to estimate and compare your total annual healthcare costs across different insurance plans.">
+  <meta name="author" content="Health Benefits Advisor">
+
+  <meta property="og:title" content="Health Benefits Calculator - Personalized Cost Estimates">
+  <meta property="og:description" content="Calculate your healthcare costs with our interactive tool. Compare plans and find the best value.">
+  <meta property="og:type" content="website">
+
+  <title>Health Benefits Calculator - Interactive Cost Analysis</title>
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="calculator-page">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>
+            <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M16 2L2 9V15C2 23 8 29.5 16 30C24 29.5 30 23 30 15V9L16 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 16L14 20L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <a href="index.html" style="color: inherit; text-decoration: none;">Health Benefits Advisor</a>
+          </h1>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+            <span class="hamburger"></span>
+          </button>
+
+          <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Recommendations</a></li>
+            <li><a href="index.html#comparison" class="nav-link">Comparison</a></li>
+            <li><a href="index.html#personas" class="nav-link">Profiles</a></li>
+            <li><a href="calculator.html" class="nav-link nav-link-primary active">Calculator</a></li>
+          </ul>
+        </nav>
+
+        <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 2V4M10 16V18M18 10H16M4 10H2M15.66 4.34L14.24 5.76M5.76 14.24L4.34 15.66M15.66 15.66L14.24 14.24M5.76 5.76L4.34 4.34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17 10.5C16.3 13.5 13.5 16 10 16C6 16 3 13 3 9C3 5.5 5.5 2.7 8.5 2C7 3 6 5 6 7C6 10 8 12 11 12C13 12 15 11 16 9.5C16.5 9.8 17 10 17 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+  <main id="main-content" role="main">
+
+    <!-- Calculator Hero -->
+    <section class="calculator-hero">
+      <div class="container">
+        <h2>Interactive Benefits Calculator</h2>
+        <p>Get personalized cost estimates based on your healthcare needs and usage patterns</p>
+
+        <div class="calculator-actions">
+          <button id="reset-calculator" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2 8C2 4.7 4.7 2 8 2C11.3 2 14 4.7 14 8C14 11.3 11.3 14 8 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M2 11V8H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Reset
+          </button>
+          <button id="save-scenario" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M12 2H3C2.4 2 2 2.4 2 3V13C2 13.6 2.4 14 3 14H13C13.6 14 14 13.6 14 13V4L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M11 2V6H5V2M11 14V9H5V14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Save Scenario
+          </button>
+          <button id="export-results" class="btn btn-secondary" onclick="window.print()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 5V1H12V5M4 11H2V6H14V11H12M12 8H4V15H12V8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Print
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculator Layout -->
+    <div class="calculator-layout">
+      <div class="container">
+        <div class="calculator-grid">
+
+          <!-- Input Panel -->
+          <aside class="calculator-inputs" role="form" aria-label="Calculator inputs">
+            <div class="input-section">
+              <h3 class="input-section-title">Personal Information</h3>
+
+              <div class="form-group">
+                <label for="coverage-tier">Coverage Tier</label>
+                <select id="coverage-tier" class="form-control">
+                  <option value="employee">Employee Only</option>
+                  <option value="employeeSpouse">Employee + Spouse</option>
+                  <option value="employeeChildren">Employee + Children</option>
+                  <option value="family">Family (Employee + Spouse + Children)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="age">Your Age</label>
+                <input type="number" id="age" class="form-control" min="18" max="99" value="35" aria-describedby="age-help">
+                <small id="age-help" class="form-help">Age affects some cost estimates</small>
+              </div>
+
+              <div class="form-group">
+                <label for="num-dependents">Number of Dependents</label>
+                <input type="number" id="num-dependents" class="form-control" min="0" max="10" value="0" aria-describedby="dependents-help">
+                <small id="dependents-help" class="form-help">Spouse and/or children</small>
+              </div>
+            </div>
+
+            <div class="input-section">
+              <h3 class="input-section-title">Expected Healthcare Usage</h3>
+
+              <div class="form-group">
+                <label for="primary-visits">Primary Care Visits (Annual)</label>
+                <div class="slider-container">
+                  <input type="range" id="primary-visits" class="form-slider" min="0" max="24" value="2" aria-describedby="primary-help">
+                  <output for="primary-visits" class="slider-value">2</output>
+                </div>
+                <small id="primary-help" class="form-help">Routine checkups, sick visits</small>
+              </div>
+
+              <div class="form-group">
+                <label for="specialist-visits">Specialist Visits (Annual)</label>
+                <div class="slider-container">
+                  <input type="range" id="specialist-visits" class="form-slider" min="0" max="24" value="0" aria-describedby="specialist-help">
+                  <output for="specialist-visits" class="slider-value">0</output>
+                </div>
+                <small id="specialist-help" class="form-help">Cardiologist, dermatologist, etc.</small>
+              </div>
+
+              <div class="form-group">
+                <label for="urgent-care-visits">Urgent Care Visits (Annual)</label>
+                <div class="slider-container">
+                  <input type="range" id="urgent-care-visits" class="form-slider" min="0" max="12" value="0" aria-describedby="urgent-help">
+                  <output for="urgent-care-visits" class="slider-value">0</output>
+                </div>
+                <small id="urgent-help" class="form-help">After-hours or walk-in care</small>
+              </div>
+
+              <div class="form-group">
+                <label for="er-visits">Emergency Room Visits (Annual)</label>
+                <div class="slider-container">
+                  <input type="range" id="er-visits" class="form-slider" min="0" max="6" value="0" aria-describedby="er-help">
+                  <output for="er-visits" class="slider-value">0</output>
+                </div>
+                <small id="er-help" class="form-help">Emergency department visits</small>
+              </div>
+            </div>
+
+            <div class="input-section">
+              <h3 class="input-section-title">Prescription Medications</h3>
+
+              <div class="form-group">
+                <label for="generic-rx">Generic Prescriptions (Monthly)</label>
+                <div class="slider-container">
+                  <input type="range" id="generic-rx" class="form-slider" min="0" max="20" value="0" aria-describedby="generic-help">
+                  <output for="generic-rx" class="slider-value">0</output>
+                </div>
+                <small id="generic-help" class="form-help">Most common medications</small>
+              </div>
+
+              <div class="form-group">
+                <label for="preferred-rx">Preferred Brand Prescriptions (Monthly)</label>
+                <div class="slider-container">
+                  <input type="range" id="preferred-rx" class="form-slider" min="0" max="10" value="0" aria-describedby="preferred-help">
+                  <output for="preferred-rx" class="slider-value">0</output>
+                </div>
+                <small id="preferred-help" class="form-help">Brand name on formulary</small>
+              </div>
+
+              <div class="form-group">
+                <label for="nonpreferred-rx">Non-Preferred Brand Prescriptions (Monthly)</label>
+                <div class="slider-container">
+                  <input type="range" id="nonpreferred-rx" class="form-slider" min="0" max="10" value="0" aria-describedby="nonpreferred-help">
+                  <output for="nonpreferred-rx" class="slider-value">0</output>
+                </div>
+                <small id="nonpreferred-help" class="form-help">Brand name not on formulary</small>
+              </div>
+
+              <div class="form-group">
+                <label for="specialty-rx">Specialty Medications (Monthly)</label>
+                <div class="slider-container">
+                  <input type="range" id="specialty-rx" class="form-slider" min="0" max="5" value="0" aria-describedby="specialty-help">
+                  <output for="specialty-rx" class="slider-value">0</output>
+                </div>
+                <small id="specialty-help" class="form-help">High-cost specialty drugs</small>
+              </div>
+            </div>
+
+            <div class="input-section">
+              <h3 class="input-section-title">Additional Expenses</h3>
+
+              <div class="form-group">
+                <label for="planned-procedures">Planned Procedures/Surgeries</label>
+                <input type="number" id="planned-procedures" class="form-control" min="0" max="100000" step="100" value="0" aria-describedby="procedures-help">
+                <small id="procedures-help" class="form-help">Estimated cost before insurance</small>
+              </div>
+
+              <div class="form-group">
+                <label>
+                  <input type="checkbox" id="has-chronic-condition" class="form-checkbox">
+                  I have chronic condition(s) requiring ongoing care
+                </label>
+              </div>
+            </div>
+
+            <div class="input-actions">
+              <button id="calculate-btn" class="btn btn-primary btn-block">Calculate Costs</button>
+            </div>
+          </aside>
+
+          <!-- Results Panel -->
+          <div class="calculator-results">
+
+            <!-- Results Summary Cards -->
+            <div id="results-summary" class="results-summary">
+              <!-- Dynamically populated by JavaScript -->
+            </div>
+
+            <!-- Detailed Breakdown -->
+            <div class="results-detail">
+              <div class="results-header">
+                <h3>Cost Breakdown by Plan</h3>
+                <div class="results-controls">
+                  <button class="view-toggle active" data-view="cards">Card View</button>
+                  <button class="view-toggle" data-view="table">Table View</button>
+                </div>
+              </div>
+
+              <div id="results-cards-view" class="results-cards">
+                <!-- Plan detail cards populated by JavaScript -->
+              </div>
+
+              <div id="results-table-view" class="results-table" style="display: none;">
+                <div class="table-wrapper">
+                  <table class="breakdown-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Cost Category</th>
+                        <!-- Plan columns added dynamically -->
+                      </tr>
+                    </thead>
+                    <tbody id="breakdown-tbody">
+                      <!-- Rows added dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Comparison Chart -->
+            <div class="results-chart">
+              <h3>Total Annual Cost Comparison</h3>
+              <div class="chart-container">
+                <canvas id="resultsChart" role="img" aria-label="Annual cost comparison chart"></canvas>
+              </div>
+            </div>
+
+            <!-- Monthly Breakdown -->
+            <div class="monthly-breakdown">
+              <h3>Monthly Cost Breakdown</h3>
+              <div id="monthly-cards" class="monthly-cards">
+                <!-- Monthly cards populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Break-even Analysis -->
+            <div class="breakeven-analysis">
+              <h3>Break-Even Analysis</h3>
+              <p class="section-subtitle">At what point does each plan become more cost-effective?</p>
+              <div id="breakeven-content" class="breakeven-content">
+                <!-- Break-even analysis populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Savings Comparison -->
+            <div class="savings-comparison">
+              <h3>Potential Savings</h3>
+              <div id="savings-content" class="savings-cards">
+                <!-- Savings comparison populated by JavaScript -->
+              </div>
+            </div>
+
+            <!-- Recommendations based on inputs -->
+            <div class="personalized-recommendations">
+              <h3>Recommended for Your Situation</h3>
+              <div id="personalized-rec" class="recommendation-box">
+                <!-- Personalized recommendation populated by JavaScript -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Scenarios -->
+    <section class="saved-scenarios">
+      <div class="container">
+        <div class="scenarios-header">
+          <h2>Saved Scenarios</h2>
+          <button id="clear-scenarios" class="btn btn-small btn-secondary">Clear All</button>
+        </div>
+        <div id="scenarios-list" class="scenarios-list">
+          <p class="empty-state">No saved scenarios yet. Use the "Save Scenario" button to save your calculations.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculator Tips -->
+    <section class="calculator-tips">
+      <div class="container">
+        <h2 class="section-title">Calculator Tips</h2>
+        <div class="tips-grid">
+          <div class="tip-card">
+            <div class="tip-icon">💡</div>
+            <h3>Be Realistic</h3>
+            <p>Estimate your healthcare usage based on past years. Review your previous medical bills and prescription history for accuracy.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">📊</div>
+            <h3>Compare Scenarios</h3>
+            <p>Save multiple scenarios to compare best-case, average, and worst-case situations. This helps you understand potential cost ranges.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">💰</div>
+            <h3>Consider HSA Benefits</h3>
+            <p>High-deductible plans with HSA eligibility offer triple tax advantages and employer contributions that reduce your net costs.</p>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">🔄</div>
+            <h3>Account for Changes</h3>
+            <p>If you're planning a family, expecting surgery, or starting new medications, adjust your estimates accordingly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Health Benefits Advisor</h3>
+          <p>Making health insurance decisions simpler with data-driven recommendations and interactive tools.</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Recommendations</a></li>
+            <li><a href="index.html#comparison">Plan Comparison</a></li>
+            <li><a href="index.html#personas">Find Your Profile</a></li>
+            <li><a href="calculator.html">Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#faq">FAQ</a></li>
+            <li><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Disclaimer</h4>
+          <p class="disclaimer">This calculator provides estimates for educational purposes. Actual costs may vary based on specific plan details and provider charges. Consult your benefits administrator for official information.</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Health Benefits Advisor. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="calculator.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Comprehensive health benefits analysis and recommendations to help you choose the best health insurance plan for your needs.">
+  <meta name="author" content="Health Benefits Advisor">
+
+  <!-- Open Graph tags for social sharing -->
+  <meta property="og:title" content="Health Benefits Advisor - Best Plan Recommendations">
+  <meta property="og:description" content="Find the perfect health insurance plan with our data-driven recommendations and interactive calculator.">
+  <meta property="og:type" content="website">
+
+  <title>Health Benefits Advisor - Plan Recommendations</title>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="preload" href="data.js" as="script">
+  <link rel="preload" href="script.js" as="script">
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header with navigation -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>
+            <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M16 2L2 9V15C2 23 8 29.5 16 30C24 29.5 30 23 30 15V9L16 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 16L14 20L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Health Benefits Advisor
+          </h1>
+        </div>
+
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+          <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" aria-expanded="false">
+            <span class="hamburger"></span>
+          </button>
+
+          <ul class="nav-list">
+            <li><a href="#recommendations" class="nav-link active">Recommendations</a></li>
+            <li><a href="#comparison" class="nav-link">Plan Comparison</a></li>
+            <li><a href="#personas" class="nav-link">Find Your Profile</a></li>
+            <li><a href="calculator.html" class="nav-link nav-link-primary">Calculator</a></li>
+          </ul>
+        </nav>
+
+        <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 2V4M10 16V18M18 10H16M4 10H2M15.66 4.34L14.24 5.76M5.76 14.24L4.34 15.66M15.66 15.66L14.24 14.24M5.76 5.76L4.34 4.34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <svg class="moon-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17 10.5C16.3 13.5 13.5 16 10 16C6 16 3 13 3 9C3 5.5 5.5 2.7 8.5 2C7 3 6 5 6 7C6 10 8 12 11 12C13 12 15 11 16 9.5C16.5 9.8 17 10 17 10.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Scroll progress indicator -->
+  <div class="scroll-progress" role="progressbar" aria-label="Page scroll progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+  <!-- Main content -->
+  <main id="main-content" role="main">
+
+    <!-- Hero section -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-content">
+          <h2 class="hero-title">Find Your Perfect Health Plan</h2>
+          <p class="hero-subtitle">Data-driven recommendations based on comprehensive analysis of premiums, coverage, and estimated costs</p>
+
+          <div class="hero-actions">
+            <a href="#recommendations" class="btn btn-primary">View Recommendations</a>
+            <a href="calculator.html" class="btn btn-secondary">Try Calculator</a>
+          </div>
+
+          <div class="quick-stats">
+            <div class="stat">
+              <span class="stat-number" data-count="3">0</span>
+              <span class="stat-label">Plans Analyzed</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">$<span data-count="4500">0</span></span>
+              <span class="stat-label">Avg. Annual Savings</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number" data-count="9">0</span>
+              <span class="stat-label">User Profiles</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick start guide -->
+    <section class="quick-start">
+      <div class="container">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <h3>Review Recommendations</h3>
+            <p>Explore our top-rated plans based on comprehensive cost analysis</p>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <h3>Find Your Profile</h3>
+            <p>Identify which persona best matches your healthcare needs</p>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <h3>Use Calculator</h3>
+            <p>Get personalized cost estimates with our interactive tool</p>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <h3>Make Decision</h3>
+            <p>Choose the plan that offers the best value for your situation</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Top recommendations section -->
+    <section id="recommendations" class="recommendations">
+      <div class="container">
+        <h2 class="section-title">Top Recommended Plans</h2>
+        <p class="section-subtitle">Based on comprehensive analysis of costs, coverage, and value across different user profiles</p>
+
+        <!-- Recommendation cards will be dynamically generated -->
+        <div id="recommendation-cards" class="recommendation-grid">
+          <!-- Cards populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Cost comparison charts -->
+    <section class="cost-analysis">
+      <div class="container">
+        <h2 class="section-title">Cost Analysis by Scenario</h2>
+        <p class="section-subtitle">Estimated annual costs including premiums, out-of-pocket expenses, and HSA contributions</p>
+
+        <div class="chart-controls">
+          <button class="chart-btn active" data-scenario="healthyIndividual">Healthy Individual</button>
+          <button class="chart-btn" data-scenario="averageIndividual">Average User</button>
+          <button class="chart-btn" data-scenario="chronicCondition">Chronic Condition</button>
+          <button class="chart-btn" data-scenario="family">Family</button>
+        </div>
+
+        <div class="chart-container">
+          <canvas id="costComparisonChart" role="img" aria-label="Cost comparison bar chart"></canvas>
+        </div>
+
+        <div class="chart-legend">
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--primary-color);"></span>
+            <span>Total Annual Cost</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-color" style="background: var(--success-color);"></span>
+            <span>Best Value</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Personas section -->
+    <section id="personas" class="personas">
+      <div class="container">
+        <h2 class="section-title">Find Your Healthcare Profile</h2>
+        <p class="section-subtitle">Select the profile that best matches your situation to see personalized recommendations</p>
+
+        <div id="persona-cards" class="persona-grid">
+          <!-- Persona cards populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed comparison table -->
+    <section id="comparison" class="comparison-table-section">
+      <div class="container">
+        <h2 class="section-title">Detailed Plan Comparison</h2>
+        <p class="section-subtitle">Side-by-side comparison of all plan features and costs</p>
+
+        <div class="table-controls">
+          <button class="table-toggle active" data-view="overview">Overview</button>
+          <button class="table-toggle" data-view="costs">Costs</button>
+          <button class="table-toggle" data-view="coverage">Coverage Details</button>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="comparison-table" class="comparison-table">
+            <thead>
+              <tr>
+                <th scope="col" class="sticky-col">Feature</th>
+                <!-- Plan columns populated by JavaScript -->
+              </tr>
+            </thead>
+            <tbody id="comparison-tbody">
+              <!-- Table rows populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-actions">
+          <button class="btn btn-secondary" onclick="window.print()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 5V1H12V5M4 11H2V6H14V11H12M12 8H4V15H12V8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Print Comparison
+          </button>
+          <a href="calculator.html" class="btn btn-primary">Calculate Your Costs</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+      <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+
+        <div class="faq-grid">
+          <details class="faq-item">
+            <summary>How are these recommendations calculated?</summary>
+            <div class="faq-content">
+              <p>Our recommendations are based on comprehensive analysis of total annual costs across multiple scenarios. We factor in monthly premiums, deductibles, out-of-pocket maximums, typical copays, and employer HSA contributions. Each plan is evaluated against different user profiles to determine which offers the best value.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What's the difference between PPO, HMO, and HSA plans?</summary>
+            <div class="faq-content">
+              <p><strong>PPO (Preferred Provider Organization):</strong> Offers flexibility to see any provider without referrals, with lower costs for in-network care.</p>
+              <p><strong>HMO (Health Maintenance Organization):</strong> Requires you to choose a primary care physician and get referrals for specialists, but typically has lower copays.</p>
+              <p><strong>HSA-eligible plans:</strong> High-deductible health plans that allow you to contribute pre-tax dollars to a Health Savings Account for current and future medical expenses.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Should I choose a high or low deductible plan?</summary>
+            <div class="faq-content">
+              <p>It depends on your expected healthcare usage. If you're generally healthy and rarely visit the doctor, a high-deductible plan with lower premiums (and HSA eligibility) often saves money. If you have ongoing health needs, chronic conditions, or a family, a plan with higher premiums but lower copays and deductibles typically costs less overall.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>What is an HSA and how does it work?</summary>
+            <div class="faq-content">
+              <p>A Health Savings Account (HSA) is a tax-advantaged savings account for medical expenses. Contributions are pre-tax (reducing your taxable income), the money grows tax-free, and withdrawals for qualified medical expenses are tax-free. HSAs are only available with high-deductible health plans. Many employers contribute to your HSA, which is essentially free money for healthcare.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>How do I use the interactive calculator?</summary>
+            <div class="faq-content">
+              <p>Visit our <a href="calculator.html">Calculator page</a> to input your personal information including family size, expected doctor visits, prescriptions, and any planned procedures. The calculator will show real-time cost estimates for each plan, helping you identify which option saves you the most money based on your specific situation.</p>
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>Can I change plans after enrollment?</summary>
+            <div class="faq-content">
+              <p>Generally, you can only change health plans during the annual open enrollment period or if you experience a qualifying life event (marriage, birth, job change, etc.). Review your options carefully during enrollment to choose the plan that best fits your needs for the entire year.</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="cta">
+      <div class="container">
+        <div class="cta-content">
+          <h2>Ready to Calculate Your Costs?</h2>
+          <p>Use our interactive calculator to get personalized cost estimates based on your specific healthcare needs</p>
+          <a href="calculator.html" class="btn btn-large btn-primary">Open Calculator</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Health Benefits Advisor</h3>
+          <p>Making health insurance decisions simpler with data-driven recommendations and interactive tools.</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#recommendations">Recommendations</a></li>
+            <li><a href="#comparison">Plan Comparison</a></li>
+            <li><a href="#personas">Find Your Profile</a></li>
+            <li><a href="calculator.html">Calculator</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Resources</h4>
+          <ul class="footer-links">
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href="#" aria-label="Accessibility information">Accessibility</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Disclaimer</h4>
+          <p class="disclaimer">This tool provides estimates for educational purposes. Actual costs may vary. Consult your HR department or benefits administrator for official plan information.</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Health Benefits Advisor. All rights reserved.</p>
+        <p>Built with modern web standards for accessibility and performance.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to top button -->
+  <button class="back-to-top" aria-label="Back to top" title="Back to top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
