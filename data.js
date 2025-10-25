@@ -831,7 +831,7 @@ const personas = {
 
 const allMedicalPlans = [...usgMedicalPlans, ...zaxbysMedicalPlans];
 
-// Export for use in other scripts
+// Export for use in other scripts (Node.js)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     familyInfo,
@@ -843,4 +843,16 @@ if (typeof module !== 'undefined' && module.exports) {
     familyRecommendations,
     personas
   };
+}
+
+// Make available globally for browser
+if (typeof window !== 'undefined') {
+  window.familyInfo = familyInfo;
+  window.usgMedicalPlans = usgMedicalPlans;
+  window.zaxbysMedicalPlans = zaxbysMedicalPlans;
+  window.allMedicalPlans = allMedicalPlans;
+  window.dentalPlans = dentalPlans;
+  window.visionPlans = visionPlans;
+  window.familyRecommendations = familyRecommendations;
+  window.personas = personas;
 }
